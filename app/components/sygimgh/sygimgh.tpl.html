@@ -1,0 +1,67 @@
+<div>
+<div layout='row'>
+<input id='input-file-selector' type='file' style='display: none'>
+<!-- onchange='angular.element(this).scope().$ctrl.openFile(this.value)' /> -->
+<md-button class='md-fab' ng-click='$ctrl.openFileSelector()'>
+    <md-icon class='material-icons'>folder</md-icon>
+</md-button>
+<md-button class='md-fab' ng-click="$ctrl.save($ctrl.nodes)">
+    <md-icon class='material-icons'>save</md-icon>
+</md-button>
+<md-button class='md-fab' ng-click='$ctrl.reduce("completion")'>
+    <md-icon class='material-icons'>autorenew</md-icon>
+</md-button>
+</div>
+<svg ng-attr-width='{{$ctrl.graph.width}}' ng-attr-height='{{$ctrl.graph.height}}' ng-cloak>
+    <defs>
+        <filter id="shadow-1" x="-40%" y="-40%" width="200%" height="200%">
+          <feOffset result="offOut" in="SourceGraphic" dx="5" dy="5" />
+          <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+          values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+          <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+          <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+        </filter>
+    </defs>
+    <rect ng-attr-x='{{($ctrl.graph.width - $ctrl.screen.width) * 0.5}}'
+    ng-attr-y='{{($ctrl.graph.height - $ctrl.screen.height) * 0.5}}'
+    ng-attr-width='{{$ctrl.screen.width}}'
+    ng-attr-height='{{$ctrl.screen.height}}'
+    ng-attr-fill='{{$ctrl.screen.bgColor}}'
+    filter='url(#shadow-1)'>
+    </rect>
+    <line ng-repeat='link in $ctrl.links'
+    style='stroke:{{link.color}};'
+    ng-attr-stroke-width='{{link.width}}'
+    ng-attr-x1='{{link.source.x}}'
+    ng-attr-y1='{{link.source.y}}'
+    ng-attr-x2='{{link.target.x}}'
+    ng-attr-y2='{{link.target.y}}'>
+    ></line>
+    <g ng-repeat='node in $ctrl.displayNodes'
+    ng-attr-transform='translate({{node.x}}, {{node.y}})'
+    ng-mousedown=$ctrl.onMouseDown(node.id)
+    ng-mouseup=$ctrl.onMouseUp(node.id)
+    ng-mouseleave="$ctrl.onMouseLeave(node.id)">
+        <circle
+        ng-attr-r='{{node.r}}'
+        ng-attr-fill='{{node.color}}'
+        filter='url(#shadow-1)'>
+        </circle>
+        <circle ng-show='node.isPressed'
+        ng-attr-r='{{$ctrl.pressEffect.r}}' fill='white' ng-attr-fill-opacity="{{$ctrl.pressEffect.opacity}}">
+        </circle>
+        <!-- <text text-anchor='middle' style='pointer-events: none;'>{{node.title}}</text> -->
+        <text text-anchor='middle' style='pointer-events: none;'>{{node.attributes[node.displayAttribute].value | number: 2}}</text>
+<!--         <g ng-show='node.id == $ctrl.focusNodeIndex'>
+            <circle ng-repeat="nodeAction in $ctrl.nodeActions"
+            ng-attr-cx='{{nodeAction.x}}'
+            ng-attr-cy='{{nodeAction.y}}'
+            r='20'
+            fill='lime'
+            >
+            </circle>
+        </g>
+ -->    
+    </g>
+</svg>
+</div>
