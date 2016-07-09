@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-07-09 13:05:42
+* @Last Modified time: 2016-07-09 20:48:35
 */
 
 'use strict';
@@ -14,10 +14,10 @@
         .module('sygimghApp')
         .controller('SygimghController', SygimghController);
 
-    SygimghController.$inject = ['$scope', '$timeout', '$interval', 'lodash', 'FileIO'];
+    SygimghController.$inject = ['$scope', '$timeout', '$interval', 'lodash', 'FileIO', 'DAG'];
 
     /* @ngInject */
-    function SygimghController($scope, $timeout, $interval, lodash, FileIO) {
+    function SygimghController($scope, $timeout, $interval, lodash, FileIO, DAG) {
         var $ctrl = this;
         $ctrl.title = 'Sygimgh';
         $ctrl.graph = {};
@@ -233,24 +233,24 @@
             }
         }
 
-        function trace(id, beforeFunc, deepInto, afterFunc) {
-            beforeFunc(id);
-            if(deepInto(id)){
-                var node = $ctrl.nodes[id];
-                for (var i = 0; i < node.children.length; i++) {
-                    trace(node.children[i], beforeFunc, deepInto, afterFunc);
-                }                
-            }
-            afterFunc(id);
-        }
+        // function trace(id, beforeFunc, deepInto, afterFunc) {
+        //     beforeFunc(id);
+        //     if(deepInto(id)){
+        //         var node = $ctrl.nodes[id];
+        //         for (var i = 0; i < node.children.length; i++) {
+        //             trace(node.children[i], beforeFunc, deepInto, afterFunc);
+        //         }                
+        //     }
+        //     afterFunc(id);
+        // }
 
-        function draw(id) {
-            var node = $ctrl.nodes[id];
+        function draw(nodes, id) {
+            var node = nodes[id];
             $ctrl.displayNodes.push(node);
             if (node.parent >= 0) {
                 $ctrl.links.push({
-                    source: $ctrl.nodes[node.parent],
-                    target: $ctrl.nodes[id],
+                    source: nodes[node.parent],
+                    target: nodes[id],
                     color: 'blue',
                     width: 2
                 });
@@ -260,9 +260,14 @@
         function redraw() {
             $ctrl.links.length = 0;
             $ctrl.displayNodes.length = 0;
-            trace($ctrl.rootNodeIndex, draw, function (id) {
-                return !$ctrl.nodes[id].collapse;
-            }, lodash.noop);
+            DAG.trace({
+                nodes: $ctrl.nodes,
+                id: $ctrl.rootNodeIndex,
+                beforeFunc: draw,
+                isDeeperFunc: function (nodes, id) {
+                        return !nodes[id].collapse;
+                }
+            });
             forceLayout.start();            
         }
 
@@ -377,7 +382,12 @@
                }
             }
 
-            trace($ctrl.rootNodeIndex, lodash.noop, hasChildren, reducer);
+            DAG.trace({
+                nodes: $ctrl.nodes,
+                id: $ctrl.rootNodeIndex,
+                beforeFunc: lodash.noop,
+                afterFunc: reducer
+            });
 
             $ctrl.routineRenew = $interval(function () {
                 var allDone = true;
@@ -391,7 +401,12 @@
                     }
                 }
 
-                trace($ctrl.rootNodeIndex, lodash.noop, hasChildren, reducer);
+                DAG.trace({
+                    nodes: $ctrl.nodes,
+                    id: $ctrl.rootNodeIndex,
+                    beforeFunc: lodash.noop,
+                    afterFunc: reducer
+                });
 
                 if (allDone) {
                     $interval.cancel($ctrl.routineRenew);
