@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-06-04 20:46:44
+* @Last Modified time: 2016-07-09 13:05:42
 */
 
 'use strict';
@@ -25,14 +25,20 @@
         $ctrl.nodes = {};
         $ctrl.displayNodes = [];
         $ctrl.links = [];
-        $ctrl.onClickNode = triggerCollapes;
+        $ctrl.selectedNodes = {};
+
+        $ctrl.onClickNode = selectNode;
+        $ctrl.onDoubleclickNode = triggerCollapes;
+        $ctrl.onClickBackground = selectNode;
         $ctrl.onMouseDown = onMouseDown;
         $ctrl.onMouseUp = onMouseUp;
         $ctrl.onMouseLeave = onMouseLeave;
+
         $ctrl.save = FileIO.save;
         $ctrl.openFileSelector = openFileSelector;
         $ctrl.openFile = openFile;
         $ctrl.reduce = reduce;
+        $ctrl.addChild = addChild;
 
         var forceLayout;
         var colorCategory = ['coral', 'burlywood', 'hotpink', 'deeppink', 'orange', 'gold', 'lightsalmon', 'mistyrose'];
@@ -127,6 +133,33 @@
             
             redraw();
         };
+
+        function selectNode(id) {
+            if (!id) {
+                for (var key in $ctrl.selectedNodes) {
+                    $ctrl.selectedNodes[key].strokeWidth = 0;
+                    delete $ctrl.selectedNodes[key];
+                }
+                $ctrl.lastSelectedNode = null;
+                return;
+            }
+
+            if ($ctrl.selectedNodes[id]) {
+                return;
+            }
+            else {
+                for (var key in $ctrl.selectedNodes) {
+                    $ctrl.selectedNodes[key].strokeWidth = 0;
+                    delete $ctrl.selectedNodes[key];
+                }
+            }
+
+            var node = $ctrl.nodes[id];
+            node.strokeColor = 'blue';
+            node.strokeWidth = 3;
+            $ctrl.selectedNodes[id] = node;
+            $ctrl.lastSelectedNode = id;
+        }
 
         function addChild(id) {
             var parentNode = $ctrl.nodes[id];
@@ -231,11 +264,6 @@
                 return !$ctrl.nodes[id].collapse;
             }, lodash.noop);
             forceLayout.start();            
-        }
-
-        function onDoubleClickNode(id) {
-            addChild(id);
-            redraw();
         }
 
         function triggerCollapes(id) {
