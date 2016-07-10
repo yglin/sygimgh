@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-07-09 20:48:35
+* @Last Modified time: 2016-07-10 12:02:11
 */
 
 'use strict';
@@ -25,11 +25,11 @@
         $ctrl.nodes = {};
         $ctrl.displayNodes = [];
         $ctrl.links = [];
-        $ctrl.selectedNodes = {};
+        $ctrl.selectedNodes = [];
 
-        $ctrl.onClickNode = selectNode;
+        $ctrl.onClickBackground = onClickBackground;
+        $ctrl.onClickNode = onClickNode;
         $ctrl.onDoubleclickNode = triggerCollapes;
-        $ctrl.onClickBackground = selectNode;
         $ctrl.onMouseDown = onMouseDown;
         $ctrl.onMouseUp = onMouseUp;
         $ctrl.onMouseLeave = onMouseLeave;
@@ -134,72 +134,83 @@
             redraw();
         };
 
-        function selectNode(id) {
-            if (!id) {
-                for (var key in $ctrl.selectedNodes) {
-                    $ctrl.selectedNodes[key].strokeWidth = 0;
-                    delete $ctrl.selectedNodes[key];
-                }
-                $ctrl.lastSelectedNode = null;
-                return;
-            }
+        function onClickBackground() {
+            clearSelect();
+        }
 
-            if ($ctrl.selectedNodes[id]) {
-                return;
+        function onClickNode(event, id) {
+            if (event.ctrlKey || event.metaKey) {
+                addSelect(id);
             }
             else {
-                for (var key in $ctrl.selectedNodes) {
-                    $ctrl.selectedNodes[key].strokeWidth = 0;
-                    delete $ctrl.selectedNodes[key];
-                }
+                select(id);
             }
+        }
 
+        function toggleSelectDisplay(id, isSelected) {
             var node = $ctrl.nodes[id];
-            node.strokeColor = 'blue';
-            node.strokeWidth = 3;
-            $ctrl.selectedNodes[id] = node;
-            $ctrl.lastSelectedNode = id;
+            if (isSelected) {
+                node.strokeColor = 'blue';
+                node.strokeWidth = 3;
+            }
+            else {
+                node.strokeWidth = 0;
+            }
+        }
+
+        function select(id) {
+            clearSelect();
+            $ctrl.selectedNodes.push(id);
+            toggleSelectDisplay(id, true);
+        }
+
+        function addSelect(id) {
+            $ctrl.selectedNodes.push(id);
+            toggleSelectDisplay(id, true);
+        }
+
+        function clearSelect() {
+            for (var i = 0; i < $ctrl.selectedNodes.length; i++) {
+                toggleSelectDisplay($ctrl.selectedNodes[i], false);
+            }
+            $ctrl.selectedNodes.length = 0;            
         }
 
         function addChild(id) {
-            var parentNode = $ctrl.nodes[id];
-            var lastIndex = Object.keys($ctrl.nodes).length + 1;
-            var newNode = $ctrl.nodes[lastIndex] = {
-                id: lastIndex,
-                title: 'new',
-                x: parentNode.x,
-                y: parentNode.y,
-                r: 50,
-                color: colorCategory[colorCategoryIndex],
-                parent: id,
-                children: [],
-                collapse: false,
-            };
-
-            newNode.attributes = angular.copy(parentNode.attributes);
-            for (var key in newNode.attributes) {
-                newNode.attributes[key].value = newNode.attributes[key].default;                
+            var childID = DAG.appendChild($ctrl.nodes, id);
+            if (childID < 0) {
+                return;
             }
-            // XXX Generate random value for completion
-            newNode.attributes.completion.value = Math.random() * 100;
 
+            var parentNode = $ctrl.nodes[id];
+            var childNode = $ctrl.nodes[childID];
+
+            childNode.title = 'new';
+            childNode.x = parentNode.x;
+            childNode.y = parentNode.y;
+            childNode.r = 50;
+
+            childNode.color = colorCategory[colorCategoryIndex];
             colorCategoryIndex = (colorCategoryIndex + 1) % colorCategory.length;
-            parentNode.children.push(lastIndex);
+
+            childNode.collapse = false;
+
+            childNode.attributes = angular.copy(parentNode.attributes);
+            for (var key in childNode.attributes) {
+                childNode.attributes[key].value = childNode.attributes[key].default;                
+            }
+
+            // XXX Generate random value for completion
+            childNode.attributes.completion.value = Math.random() * 100;
+
+            // Visually expand parent node after adding child
             parentNode.collapse = false;
 
-            flashScreen();
             redraw();
         }
 
-        function hasChildren(id) {
-            var node = $ctrl.nodes[id];
-            return node.children.length > 0;            
-        }
-
-        function accumulate(id, field, deepInto) {
-            deepInto = deepInto ? deepInto : hasChildren;
-
-            if (deepInto(id)) {
+        function accumulate(id, field) {
+            if (DAG.hasChild($ctrl.nodes, id)) {
                 var node = $ctrl.nodes[id];
                 node[field] = 0;
                 for (var i = 0; i < node.children.length; i++) {
@@ -212,15 +223,13 @@
             }
         }
 
-        function average(id, field, deepInto) {
-            deepInto = deepInto ? deepInto : hasChildren;
-
+        function average(id, field) {
             var node = $ctrl.nodes[id];
             if (!node[field]) {
                 node[field] = 0;
             }
             
-            if (deepInto(id)) {
+            if (DAG.hasChild($ctrl.nodes, id)) {
                 node[field] = 0;
                 for (var i = 0; i < node.children.length; i++) {
                     node[field] += average(node.children[i], field, deepInto);
@@ -251,7 +260,7 @@
                 $ctrl.links.push({
                     source: nodes[node.parent],
                     target: nodes[id],
-                    color: 'blue',
+                    color: 'darkgreen',
                     width: 2
                 });
             }
@@ -351,12 +360,12 @@
 
         function getReducer(reducer, attribute) {
             if (reducer == 'average') {
-                return function (id) {
-                    var node = $ctrl.nodes[id];
-                    if (hasChildren(id)) {
+                return function (nodes, id) {
+                    var node = nodes[id];
+                    if (DAG.hasChild(nodes, id)) {
                         var sum = 0;
                         for (var i = 0; i < node.children.length; i++) {
-                            var childNode = $ctrl.nodes[node.children[i]];
+                            var childNode = nodes[node.children[i]];
                             sum += childNode.attributes[attribute].value;
                         }
                         node.attributes[attribute].value = sum / node.children.length;

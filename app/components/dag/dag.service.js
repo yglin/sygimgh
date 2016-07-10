@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-07-09 20:00:54
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-07-09 20:47:30
+* @Last Modified time: 2016-07-10 11:59:38
 */
 
 (function() {
@@ -19,6 +19,7 @@
         var self = this;
         self.trace = trace;
         self.hasChild = hasChild;
+        self.appendChild = appendChild;
 
         ////////////////
 
@@ -33,7 +34,7 @@
             recursive(options.nodes, options.id);
 
             function recursive(nodes, id) {
-                console.log('hit node ' + id);
+                // console.log('hit node ' + id);
                 options.beforeFunc(nodes, id);
                 if(self.hasChild(nodes, id) && options.isDeeperFunc(nodes, id)){
                     var thisNode = nodes[id];
@@ -47,7 +48,61 @@
         }
 
         function hasChild(nodes, id) {
-            return typeof nodes[id].children.length && nodes[id].children.length > 0;
+            return nodes[id] && nodes[id].children && typeof nodes[id].children.length && nodes[id].children.length > 0;
+        }
+
+        function appendChild(nodes, id, childID) {
+            var parentNode = nodes[id];
+            if (typeof childID !== 'number') {
+            // Append new node
+                childID = Math.max.apply(null, Object.keys(nodes)) + 1;
+                nodes[childID] = {
+                    id: childID,
+                    parent: id,
+                    children: [],
+                };
+            }
+
+            parentNode.children.push(childID);
+            
+            if (validate(nodes, childID)) {
+                return childID;
+            }
+            else {
+                console.error('Can not append child ' + childID + ' to ' + id + ', failed DAG validation');
+                parentNode.children.pop();
+                return -1;
+            }
+        }
+
+        // Validate DAG structure
+        function validate(nodes, id) {
+            
+            // Check acyclic
+            var records = [];
+            var gotALoop = false;
+            function touch(nodes, id) {
+                if (records.indexOf(id) >= 0) {
+                    console.error("Found a loop in DAG: " + records.toString());
+                    gotALoop = true;
+                }
+                else {
+                    records.push(id);
+                }
+            }
+
+            function loopNotFound(nodes, id) {
+                return !gotALoop;
+            }
+
+            trace({
+                nodes: nodes,
+                id: id,
+                beforeFunc: touch,
+                isDeeperFunc: loopNotFound
+            });
+
+            return !gotALoop;
         }
     }
 })();
