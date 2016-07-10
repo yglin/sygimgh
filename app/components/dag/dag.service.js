@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-07-09 20:00:54
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-07-10 11:59:38
+* @Last Modified time: 2016-07-10 14:05:33
 */
 
 (function() {
@@ -20,6 +20,7 @@
         self.trace = trace;
         self.hasChild = hasChild;
         self.appendChild = appendChild;
+        self.removeChild = removeChild;
 
         ////////////////
 
@@ -27,22 +28,35 @@
             if (!options || !options.nodes || !options.id) {
                 return;
             }
+            options.linkFunc = typeof options.linkFunc === 'function' ? options.linkFunc : lodash.noop;
             options.beforeFunc = typeof options.beforeFunc === 'function' ? options.beforeFunc : lodash.noop;
             options.afterFunc = typeof options.afterFunc === 'function' ? options.afterFunc : lodash.noop;
             options.isDeeperFunc = typeof options.isDeeperFunc === 'function' ? options.isDeeperFunc : lodash.constant(true);
 
-            recursive(options.nodes, options.id);
+            for (var id in options.nodes) {
+                options.nodes[id].touched = false;
+            }
 
-            function recursive(nodes, id) {
+            recursive(options.nodes, options.id, -1);
+
+            function recursive(nodes, id, fromID) {
                 // console.log('hit node ' + id);
+                var thisNode = nodes[id];
+
+                options.linkFunc(nodes, id, fromID);
+
+                if (thisNode.touched) {
+                    return;
+                }
+
                 options.beforeFunc(nodes, id);
                 if(self.hasChild(nodes, id) && options.isDeeperFunc(nodes, id)){
-                    var thisNode = nodes[id];
                     for (var i = 0; i < thisNode.children.length; i++) {
-                        recursive(nodes, thisNode.children[i]);
+                        recursive(nodes, thisNode.children[i], id);
                     }                
                 }
                 options.afterFunc(nodes, id);            
+                thisNode.touched = true;
             }
 
         }
@@ -52,43 +66,57 @@
         }
 
         function appendChild(nodes, id, childID) {
-            var parentNode = nodes[id];
             if (typeof childID !== 'number') {
             // Append new node
                 childID = Math.max.apply(null, Object.keys(nodes)) + 1;
                 nodes[childID] = {
                     id: childID,
-                    parent: id,
+                    parents: [],
                     children: [],
                 };
             }
+            var parentNode = nodes[id];
+            var childNode = nodes[childID];
 
-            parentNode.children.push(childID);
+            if (parentNode.children.indexOf(childID) < 0) {
+                parentNode.children.push(childID);
+            }
+            if (childNode.parents.indexOf(id) < 0) {
+                childNode.parents.push(id);
+            }
             
             if (validate(nodes, childID)) {
                 return childID;
             }
             else {
                 console.error('Can not append child ' + childID + ' to ' + id + ', failed DAG validation');
-                parentNode.children.pop();
+                removeChild(nodes, id, childID);
                 return -1;
             }
+        }
+
+        function removeChild(nodes, id, childID) {
+            parentNode.children.splice(parentNode.children.indexOf(childID), 1);
+            childNode.parents.splice(childNode.parents.indexOf(id), 1);
         }
 
         // Validate DAG structure
         function validate(nodes, id) {
             
             // Check acyclic
-            var records = [];
+            var recordStack = [];
             var gotALoop = false;
+            
             function touch(nodes, id) {
-                if (records.indexOf(id) >= 0) {
-                    console.error("Found a loop in DAG: " + records.toString());
+                if (recordStack.indexOf(id) >= 0) {
+                    console.error("Found a loop in DAG: " + recordStack.toString() + " --> " + id);
                     gotALoop = true;
                 }
-                else {
-                    records.push(id);
-                }
+                recordStack.push(id);
+            }
+
+            function leave(nodes, id) {
+                recordStack.pop();
             }
 
             function loopNotFound(nodes, id) {
@@ -99,7 +127,8 @@
                 nodes: nodes,
                 id: id,
                 beforeFunc: touch,
-                isDeeperFunc: loopNotFound
+                isDeeperFunc: loopNotFound,
+                afterFunc: leave
             });
 
             return !gotALoop;

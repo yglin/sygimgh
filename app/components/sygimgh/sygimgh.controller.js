@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-07-10 12:02:11
+* @Last Modified time: 2016-07-10 14:03:32
 */
 
 'use strict';
@@ -81,7 +81,7 @@
                 y: 10,
                 r: 50,
                 color: colorCategory[colorCategoryIndex],
-                parent: -1,
+                parents: [],
                 children: [2],
                 collapse: false,
                 attributes: {
@@ -101,7 +101,7 @@
                 y: 170,
                 r: 50,
                 color: colorCategory[colorCategoryIndex],
-                parent: 1,
+                parents: [1],
                 children: [],
                 collapse: false,
                 attributes: {
@@ -206,6 +206,8 @@
             // Visually expand parent node after adding child
             parentNode.collapse = false;
 
+            console.log($ctrl.nodes);
+
             redraw();
         }
 
@@ -256,10 +258,20 @@
         function draw(nodes, id) {
             var node = nodes[id];
             $ctrl.displayNodes.push(node);
-            if (node.parent >= 0) {
+            if (node.parents.length > 0) {
+                for (var i = 0; i < node.parents.length; i++) {
+                    var parentID = node.parents[i]
+                }
+            }
+        }
+
+        function link(nodes, id, fromID) {
+            var sourceNode = $ctrl.nodes[fromID];
+            var targetNode = $ctrl.nodes[id];
+            if (sourceNode && targetNode) {
                 $ctrl.links.push({
-                    source: nodes[node.parent],
-                    target: nodes[id],
+                    source: sourceNode,
+                    target: targetNode,
                     color: 'darkgreen',
                     width: 2
                 });
@@ -272,11 +284,13 @@
             DAG.trace({
                 nodes: $ctrl.nodes,
                 id: $ctrl.rootNodeIndex,
+                linkFunc: link,
                 beforeFunc: draw,
                 isDeeperFunc: function (nodes, id) {
-                        return !nodes[id].collapse;
+                    return !nodes[id].collapse;
                 }
             });
+
             forceLayout.start();            
         }
 
