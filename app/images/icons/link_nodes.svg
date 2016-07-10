@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+  <ellipse ry="5" rx="5" id="svg_1" cy="6" cx="6" stroke-width="0"/>
+  <ellipse ry="5" rx="5" cy="18" cx="18" stroke-width="0" id="svg_2"/>
+  <line x1="6" y1="6" x2="18" y2="18" id="svg_3" stroke-width="3"/>
+</svg>
