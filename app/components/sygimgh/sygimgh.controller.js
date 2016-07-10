@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-07-10 14:03:32
+* @Last Modified time: 2016-07-10 17:08:14
 */
 
 'use strict';
@@ -39,6 +39,7 @@
         $ctrl.openFile = openFile;
         $ctrl.reduce = reduce;
         $ctrl.addChild = addChild;
+        $ctrl.appendChild = appendChild;
 
         var forceLayout;
         var colorCategory = ['coral', 'burlywood', 'hotpink', 'deeppink', 'orange', 'gold', 'lightsalmon', 'mistyrose'];
@@ -165,8 +166,16 @@
         }
 
         function addSelect(id) {
-            $ctrl.selectedNodes.push(id);
-            toggleSelectDisplay(id, true);
+            if ($ctrl.selectedNodes.indexOf(id) >= 0) {
+            // Already selected, remove selection
+                $ctrl.selectedNodes.splice($ctrl.selectedNodes.indexOf(id), 1);
+                toggleSelectDisplay(id, false);
+            }
+            else {
+            // Add to selection
+                $ctrl.selectedNodes.push(id);
+                toggleSelectDisplay(id, true);
+            }
         }
 
         function clearSelect() {
@@ -206,8 +215,14 @@
             // Visually expand parent node after adding child
             parentNode.collapse = false;
 
-            console.log($ctrl.nodes);
+            redraw();
+        }
 
+        function appendChild(id, childID) {
+            childID = DAG.appendChild($ctrl.nodes, id, childID);
+            if (childID < 0) {
+                return;
+            }
             redraw();
         }
 

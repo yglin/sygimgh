@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-07-09 20:00:54
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-07-10 14:05:33
+* @Last Modified time: 2016-07-10 17:01:38
 */
 
 (function() {
@@ -96,8 +96,14 @@
         }
 
         function removeChild(nodes, id, childID) {
-            parentNode.children.splice(parentNode.children.indexOf(childID), 1);
-            childNode.parents.splice(childNode.parents.indexOf(id), 1);
+            var parentNode = nodes[id];
+            if (parentNode && parentNode.children && parentNode.children.indexOf(childID) >= 0) {
+                parentNode.children.splice(parentNode.children.indexOf(childID), 1);
+            }
+            var childNode = nodes[childID];
+            if (childNode && childNode.parents && childNode.parents.indexOf(id) >= 0) {
+                childNode.parents.splice(childNode.parents.indexOf(id), 1);
+            }
         }
 
         // Validate DAG structure

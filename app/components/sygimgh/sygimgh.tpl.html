@@ -14,6 +14,9 @@
     <md-button class='md-fab md-primary md-hue-4' ng-show='$ctrl.selectedNodes.length == 1' ng-click="$ctrl.addChild($ctrl.selectedNodes[0])">
         <md-icon class='material-icons'>add</md-icon>
     </md-button>
+    <md-button class='md-fab md-primary md-hue-5' ng-show='$ctrl.selectedNodes.length == 2' ng-click="$ctrl.appendChild($ctrl.selectedNodes[0], $ctrl.selectedNodes[1])">
+        <md-icon class='material-icons'>linear_scale</md-icon>
+    </md-button>
 </div>
 <div>
 <svg ng-attr-width='{{$ctrl.graph.width}}' ng-attr-height='{{$ctrl.graph.height}}' ng-cloak>
