@@ -23,7 +23,7 @@
 
 ### Manual
   * Attached to a node, used to define the node's attributes, reducing methods, and housekeeping rules.
-  * If a node doesn't have a manual, the manual of its ancestor node which has the shortest path to this node, will apply.
+  * If a node doesn't have a manual, the manual of its ascendants which has the shortest path to this node, will apply.
 
 ### Reducing Methods
   * A group of functions that can be bind to an attribute and used to reduce the attribute's values of child nodes to that of parent node.
@@ -35,5 +35,9 @@
 
 ## User Stories
 * Open the home page, see a initial **Root** node, add a child node **A** to **Root** node, add a child node **B** to node **A**, add a child node **C** to **Root** node
-
+* Click on node **A** to select it into selection set, show its briefs, and show avalible actions for a single selected node. Click on node **B** to select it in place of node A, show its briefs.
+* Click on node **A** to select it, shift-click on node **C** to add it to selection set, show its briefs, show avaliable actions for multi-selected nodes, click on Action **Connection** to connect from node **A** to **C**.
+* Click on background rectangle to clear selection set, show avalible actions for the entire graph
+* Double-click on a node to collapse/expand its descendants
+* 
 
