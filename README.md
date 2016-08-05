@@ -2,14 +2,16 @@
 **Tracking project, visualize dependencies, housekeeping tasks.**
 
 ## User Stories
-* I have a project to make a 10 second animation about Will Ferrel got a ball hit his crotch.
-* Open the home page, see an initial **Root** node, change its title to "Will Ferrel Balls 10s", edit its description, apply an **Animation Manual** to it.
-* add a child node to **Root**, titled "Will Ferrel Animation"
-* add a child node to **Root**, titled "Ball Animation"
-* add a child node to **Root**, titled "Background"
-* add a child node to **Root**, titled "Will Ferrel Crotch Simulation"
-* As "Will Ferrel Crotch Simulation" depends on "Will Ferrel and Ball Anmation", connect node "Will Ferrel Crotch Simulation" to both of them.
-* Realize that Will Ferrel Animation need additional composition, add a node titled "Will Ferrel Comp" to the Root, and connect from "Will Ferrel Comp" to "Will Ferrel Animation"
+### Chapter 1
+1. I have a project to make a 10 second animation about Will Ferrel got a ball hit in his crotch.
+1. Open the home page, see an initial **Root** node, change its title to "Will Ferrel Balls 10s", edit its description, apply an **Animation Manual** to it.
+1. add a child node to **Root**, titled "Will Ferrel Animation"
+1. add a child node to **Root**, titled "Ball Animation"
+1. add a child node to **Root**, titled "Background"
+1. add a child node to **Root**, titled "Will Ferrel Crotch Simulation"
+1. As "Will Ferrel Crotch Simulation" depends on "Will Ferrel and Ball Anmation", connect node "Will Ferrel Crotch Simulation" to both of them.
+1. Realize that Will Ferrel Animation need additional composition, add a node titled "Will Ferrel Comp" to the Root, and connect from "Will Ferrel Comp" to "Will Ferrel Animation"
+1. Do a Housekeeping on **Root**, the result suggests removing 2 redundant dependencies of **Root** to "Will Ferrel Animation", **Root** to "Ball Animation".
 
 
 ## Features
