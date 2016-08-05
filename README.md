@@ -5,6 +5,10 @@
 ### Chapter 1
 1. I have a project to make a 10 second animation about Will Ferrel got a ball hit in his crotch.
 1. Open the home page, see an initial **Root** node, change its title to "Will Ferrel Balls 10s", edit its description, apply an **Animation Manual** to it.
+  * A **DAG** component(view + controller)
+  * A **DAG** Sevice(model) holding all nodes
+  * A single **Node** component(view + CRUD editor).
+  * A **Manual** component(view + CRUD editor).
 1. add a child node to **Root**, titled "Will Ferrel Animation"
 1. add a child node to **Root**, titled "Ball Animation"
 1. add a child node to **Root**, titled "Background"
