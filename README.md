@@ -1,6 +1,17 @@
 # sygimgh
 **Tracking project, visualize dependencies, housekeeping tasks.**
 
+## User Stories
+* I have a project to make a 10 second animation about Will Ferrel got a ball hit his crotch.
+* Open the home page, see an initial **Root** node, change its title to "Will Ferrel Balls 10s", edit its description, apply an **Animation Manual** to it.
+* add a child node to **Root**, titled "Will Ferrel Animation"
+* add a child node to **Root**, titled "Ball Animation"
+* add a child node to **Root**, titled "Background"
+* add a child node to **Root**, titled "Will Ferrel Crotch Simulation"
+* As "Will Ferrel Crotch Simulation" depends on "Will Ferrel and Ball Anmation", connect node "Will Ferrel Crotch Simulation" to both of them.
+* Realize that Will Ferrel Animation need additional composition, add a node titled "Will Ferrel Comp" to the Root, and connect from "Will Ferrel Comp" to "Will Ferrel Animation"
+
+
 ## Features
 * Visualize project **tasks as nodes**, task **dependencies as lines** between nodes, thus whole project is an **Directed Acyclic Graph(DAG)**.
 * Node(task) has **customized attributes**.
@@ -32,12 +43,4 @@
   * Customized rules to check if a node is in a "health" status.
   * If not, mark the node as "unhealthy" and report to user.
   * Defined in manual.
-
-## User Stories
-* Open the home page, see a initial **Root** node, add a child node **A** to **Root** node, add a child node **B** to node **A**, add a child node **C** to **Root** node
-* Click on node **A** to select it into selection set, show its briefs, and show avalible actions for a single selected node. Click on node **B** to select it in place of node A, show its briefs.
-* Click on node **A** to select it, shift-click on node **C** to add it to selection set, show its briefs, show avaliable actions for multi-selected nodes, click on Action **Connection** to connect from node **A** to **C**.
-* Click on background rectangle to clear selection set, show avalible actions for the entire graph
-* Double-click on a node to collapse/expand its descendants
-* 
 
