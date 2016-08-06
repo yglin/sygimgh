@@ -9,16 +9,27 @@
   * A **DAG Sevice**(model) holding all nodes
   * A single **Node** component(view + editor).
   * A **Manual** component(view + editor).
+  * A **Manual** service(model), holding manuals.
 1. add a child node to **Root**, titled "Will Ferrel Animation"
   * **DAG Service** - createNode()
   * **DAG Service** - addChild(parent, child)
   * **Node** component(view + editor).
 1. add a child node to **Root**, titled "Ball Animation"
+  * As above
 1. add a child node to **Root**, titled "Background"
+  * As above
 1. add a child node to **Root**, titled "Will Ferrel Crotch Simulation"
+  * As above
 1. As "Will Ferrel Crotch Simulation" depends on "Will Ferrel and Ball Anmation", connect node "Will Ferrel Crotch Simulation" to both of them.
-1. Realize that Will Ferrel Animation need additional composition, add a node titled "Will Ferrel Comp" to the Root, and connect from "Will Ferrel Comp" to "Will Ferrel Animation"
-1. Do a Housekeeping on **Root**, the result suggests removing 2 redundant dependencies of **Root** to "Will Ferrel Animation", **Root** to "Ball Animation".
+  * **DAG Service** - addChild(parent, child)
+1. Realize that "Will Ferrel Animation" need additional composition, add a node titled "Will Ferrel Comp" to the Root, and connect from "Will Ferrel Comp" to "Will Ferrel Animation"
+  * **DAG Service** - createNode()
+  * **DAG Service** - addChild(parent, child)
+1. Create a housekeeping rule to find redundant dependency, apply on **Root**, the result suggests removing 2 redundant dependencies of **Root** to "Will Ferrel Animation", **Root** to "Ball Animation".
+  * **Housekeeping Component**(view + editor)
+  * **Housekeeping Service**(model, CRUD), holding housekeeping rules.
+  * **Manual Service** - addHousekeeping(manual, housekeeping).
+  * **DAG service** - runHousekeeping(node).
 
 
 ## Features
