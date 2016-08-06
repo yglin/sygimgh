@@ -3,13 +3,20 @@
 
 ## User Stories
 ### Chapter 1
-1. I have a project to make a 10 second animation about Will Ferrel got a ball hit in his crotch.
-1. Open the home page, see an initial **Root** node, change its title to "Will Ferrel Balls 10s", edit its description, apply an **Animation Manual** to it.
+
+Try to make a 10 sec animation about Will Ferrel got a ball hit in his crotch.
+
+1. Create an **Animation Manual**, include these attributes: progress, manager, start date, end date, target date.
+  * A **Manual** component(view + editor).
+  * A **Manual Service**(model), holding manuals.
+  * An **Attribute Component**(view + editor).
+  * An **Attribute Service**, attribute CRUD.
+1. Open the home page, see an initial **Root** node, change its title to "Will Ferrel Balls 10s", edit its description, apply the **Animation Manual** to it.
   * A **DAG** component(view + controller)
   * A **DAG Sevice**(model) holding all nodes
   * A single **Node** component(view + editor).
   * A **Manual** component(view + editor).
-  * A **Manual** service(model), holding manuals.
+  * A **Manual Service**(model), holding manuals.
 1. add a child node to **Root**, titled "Will Ferrel Animation"
   * **DAG Service** - createNode()
   * **DAG Service** - addChild(parent, child)
