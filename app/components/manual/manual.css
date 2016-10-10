@@ -1,0 +1,17 @@
+/*
+* @Author: yglin
+* @Date:   2016-10-10 17:30:31
+* @Last Modified by:   yglin
+* @Last Modified time: 2016-10-10 17:38:43
+*/
+
+.manual-list .manual-item {
+    padding: 2px 30px;
+    border-radius: 5px;
+}
+
+.manual-list .manual-item:hover {
+    background-color: #ddf;
+    background-color: rgba(200, 200, 255, 0.5);
+    cursor: pointer;
+}

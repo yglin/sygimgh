@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-10-10 15:34:17
+* @Last Modified time: 2016-10-10 18:02:03
 */
 
 'use strict';
@@ -14,10 +14,10 @@
     .module('sygimghApp')
     .controller('SygimghController', SygimghController);
 
-    SygimghController.$inject = ['$scope', '$timeout', '$interval', 'lodash', 'FileIO', 'DAG'];
+    SygimghController.$inject = ['$scope', '$timeout', '$interval', 'lodash', 'FileIO', 'DAG', '$mdBottomSheet'];
 
     /* @ngInject */
-    function SygimghController($scope, $timeout, $interval, lodash, FileIO, DAG) {
+    function SygimghController($scope, $timeout, $interval, lodash, FileIO, DAG, $mdBottomSheet) {
         var $ctrl = this;
         $ctrl.title = 'Sygimgh';
         $ctrl.graph = {};
@@ -41,6 +41,7 @@
         // $ctrl.reduce = reduce;
         $ctrl.addChild = addChild;
         $ctrl.appendChild = appendChild;
+        $ctrl.openManualEditor = openManualEditor;
 
         var nodeVisualDefaults = {};
         var forceLayout;
@@ -396,6 +397,14 @@
                     $interval.cancel($ctrl.routineRenew);
                 }
             }, 10);
+        }
+
+        function openManualEditor(index) {
+            var manual = $ctrl.nodes[index].manual;
+            $mdBottomSheet.show({
+                template: '<md-bottom-sheet><syg-manual-editor manual-id="' + manual.id + '"></syg-manual-editor></md-bottom-sheet>',
+                clickOutsideToClose: true
+            });
         }
 
         function hashString(str){

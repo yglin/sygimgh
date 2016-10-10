@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-10-10 11:23:47
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-10-10 15:10:16
+* @Last Modified time: 2016-10-10 20:25:25
 */
 
 'use strict';
@@ -26,6 +26,7 @@
             this.manual = manual;
             this.parents = [];
             this.children = [];
+            this.attributes = manual.initAttributes();
         }
 
         ///////////////// Instance Methods ///////////////////
@@ -38,7 +39,11 @@
         }
 
         function getLabel() {
-            return this.id;
+            var attrHtml = '';
+            for (var key in this.attributes) {
+                attrHtml += JSON.stringify(this.attributes[key]) + ' | ';
+            }
+            return attrHtml;
         }
 
         function appendChild(node) {

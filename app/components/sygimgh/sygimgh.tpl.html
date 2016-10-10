@@ -8,13 +8,17 @@
     <md-button class='md-fab md-primary md-hue-2' ng-click="$ctrl.save($ctrl.nodes)">
         <md-icon class='material-icons'>save</md-icon>
     </md-button>
-    <md-button class='md-fab md-primary md-hue-1' ng-click='$ctrl.reduce("completion")'>
+<!--     <md-button class='md-fab md-primary md-hue-1' ng-click='$ctrl.reduce("completion")'>
         <md-icon class='material-icons'>autorenew</md-icon>
     </md-button>
-    <md-button class='md-fab md-primary md-hue-4' ng-show='$ctrl.selected.length === 1' ng-click="$ctrl.addChild($ctrl.selected[0])">
+ -->
+    <md-button class='md-fab md-accent' ng-show='$ctrl.selected.length === 1' ng-click='$ctrl.openManualEditor($ctrl.selected[0])'>
+        <md-icon class='material-icons'>library_books</md-icon>
+    </md-button>
+    <md-button class='md-fab md-accent md-hue-4' ng-show='$ctrl.selected.length === 1' ng-click="$ctrl.addChild($ctrl.selected[0])">
         <md-icon class='material-icons'>add</md-icon>
     </md-button>
-    <md-button class='md-fab md-primary md-hue-5' ng-show='$ctrl.selected.length === 2' ng-click="$ctrl.appendChild($ctrl.selected[0], $ctrl.selected[1])" aria-label='Append Child'>
+    <md-button class='md-fab md-accent md-hue-5' ng-show='$ctrl.selected.length === 2' ng-click="$ctrl.appendChild($ctrl.selected[0], $ctrl.selected[1])" aria-label='Append Child'>
         <md-icon md-svg-icon='/images/icons/link_nodes.svg' style='color:white;fill:white;stroke:white;'></md-icon>
     </md-button>
 </div>

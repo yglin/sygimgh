@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-07-09 20:00:54
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-10-10 15:25:26
+* @Last Modified time: 2016-10-10 17:13:21
 */
 
 (function() {
@@ -18,7 +18,7 @@
     function DAG(lodash, $log, Node, Manual) {
         var self = this;
         self.nodes = {};
-        // self.manuals = {};
+        self.manuals = {};
         self.trace = trace;
         self.hasChild = hasChild;
         self.addChild = addChild;
@@ -31,6 +31,7 @@
         function activate() {
             if (lodash.isEmpty(self.nodes)) {
                 var manual = new Manual();
+                self.manuals[manual.id] = manual;
                 var rootNode = new Node(manual);
                 self.nodes[rootNode.id] = rootNode;
                 self.rootNodeId = rootNode.id;
