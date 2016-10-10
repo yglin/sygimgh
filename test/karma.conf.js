@@ -38,6 +38,7 @@ module.exports = function(config) {
       'bower_components/angular-material/angular-material.js',
       'bower_components/gsap/src/uncompressed/TweenMax.js',
       'bower_components/ngFx/dist/ngFx.js',
+      'bower_components/angular-uuids/angular-uuid.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

@@ -2,30 +2,47 @@
 * @Author: yglin
 * @Date:   2016-07-09 20:00:54
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-07-10 17:01:38
+* @Last Modified time: 2016-10-10 15:25:26
 */
 
 (function() {
     'use strict';
 
     angular
-        .module('sygimghApp')
-        .service('DAG', DAG);
+    .module('sygimghApp')
+    .service('DAG', DAG);
 
-    DAG.$inject = ['lodash'];
+    DAG.$inject = ['lodash', '$log', 'Node', 'Manual'];
 
     /* @ngInject */
-    function DAG(lodash) {
+    function DAG(lodash, $log, Node, Manual) {
         var self = this;
+        self.nodes = {};
+        // self.manuals = {};
         self.trace = trace;
         self.hasChild = hasChild;
+        self.addChild = addChild;
         self.appendChild = appendChild;
         self.removeChild = removeChild;
 
+        activate();
+
         ////////////////
+        function activate() {
+            if (lodash.isEmpty(self.nodes)) {
+                var manual = new Manual();
+                var rootNode = new Node(manual);
+                self.nodes[rootNode.id] = rootNode;
+                self.rootNodeId = rootNode.id;
+                // var secondNode = new Node(manual);
+                // self.nodes[secondNode.id] = secondNode;
+                // appendChild(self.nodes, rootNode.id, secondNode.id);
+            }
+        }
 
         function trace (options) {
             if (!options || !options.nodes || !options.id) {
+                $log.error('Bad options for DAG.trace(): ' + JSON.stringify(options));
                 return;
             }
             options.linkFunc = typeof options.linkFunc === 'function' ? options.linkFunc : lodash.noop;
@@ -65,26 +82,22 @@
             return nodes[id] && nodes[id].children && typeof nodes[id].children.length && nodes[id].children.length > 0;
         }
 
+        function addChild(nodes, id) {
+            var parentNode = nodes[id];
+            var childNode = new Node(parentNode.manual);
+            nodes[childNode.id] = childNode;
+            parentNode.appendChild(childNode);
+            childNode.appendParent(parentNode);
+            return childNode;
+        }
+
         function appendChild(nodes, id, childID) {
-            if (typeof childID !== 'number') {
-            // Append new node
-                childID = Math.max.apply(null, Object.keys(nodes)) + 1;
-                nodes[childID] = {
-                    id: childID,
-                    parents: [],
-                    children: [],
-                };
-            }
             var parentNode = nodes[id];
             var childNode = nodes[childID];
 
-            if (parentNode.children.indexOf(childID) < 0) {
-                parentNode.children.push(childID);
-            }
-            if (childNode.parents.indexOf(id) < 0) {
-                childNode.parents.push(id);
-            }
-            
+            parentNode.appendChild(childNode);
+            childNode.appendParent(parentNode);
+
             if (validate(nodes, childID)) {
                 return childID;
             }
@@ -97,13 +110,9 @@
 
         function removeChild(nodes, id, childID) {
             var parentNode = nodes[id];
-            if (parentNode && parentNode.children && parentNode.children.indexOf(childID) >= 0) {
-                parentNode.children.splice(parentNode.children.indexOf(childID), 1);
-            }
             var childNode = nodes[childID];
-            if (childNode && childNode.parents && childNode.parents.indexOf(id) >= 0) {
-                childNode.parents.splice(childNode.parents.indexOf(id), 1);
-            }
+            parentNode.removeChild(childNode);
+            childNode.removeParent(parentNode);
         }
 
         // Validate DAG structure

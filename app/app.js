@@ -19,7 +19,8 @@ angular
 		'ngSanitize',
 		'ngMaterial',
 		'ngLodash',
-		'ngFileSaver'
+		'ngFileSaver',
+		'angular-uuid'
 	])
 	.config(function ($routeProvider) {
 		$routeProvider

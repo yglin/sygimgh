@@ -11,10 +11,10 @@
     <md-button class='md-fab md-primary md-hue-1' ng-click='$ctrl.reduce("completion")'>
         <md-icon class='material-icons'>autorenew</md-icon>
     </md-button>
-    <md-button class='md-fab md-primary md-hue-4' ng-show='$ctrl.selectedNodes.length == 1' ng-click="$ctrl.addChild($ctrl.selectedNodes[0])">
+    <md-button class='md-fab md-primary md-hue-4' ng-show='$ctrl.selected.length === 1' ng-click="$ctrl.addChild($ctrl.selected[0])">
         <md-icon class='material-icons'>add</md-icon>
     </md-button>
-    <md-button class='md-fab md-primary md-hue-5' ng-show='$ctrl.selectedNodes.length == 2' ng-click="$ctrl.appendChild($ctrl.selectedNodes[0], $ctrl.selectedNodes[1])" aria-label='Append Child'>
+    <md-button class='md-fab md-primary md-hue-5' ng-show='$ctrl.selected.length === 2' ng-click="$ctrl.appendChild($ctrl.selected[0], $ctrl.selected[1])" aria-label='Append Child'>
         <md-icon md-svg-icon='/images/icons/link_nodes.svg' style='color:white;fill:white;stroke:white;'></md-icon>
     </md-button>
 </div>
@@ -45,23 +45,24 @@
     ng-attr-x2='{{link.target.x}}'
     ng-attr-y2='{{link.target.y}}'>
     ></line>
-    <g ng-repeat='node in $ctrl.displayNodes'
+    <g ng-repeat='node in $ctrl.nodes'
     ng-attr-transform='translate({{node.x}}, {{node.y}})'
-    ng-click='$ctrl.onClickNode($event, node.id)'
-    ng-dblclick='$ctrl.onDoubleclickNode(node.id)'
+    ng-click='$ctrl.onClickNode($event, $index)'
+    ng-dblclick='$ctrl.onDoubleclickNode($event, $index)'
     style='outline: none;'>
         <circle
         ng-attr-r='{{node.r}}'
         ng-attr-fill='{{node.color}}'
-        ng-attr-stroke='{{node.strokeColor}}'
-        ng-attr-stroke-width='{{node.strokeWidth}}'
+        ng-attr-stroke='{{ $ctrl.isSelected($index) && "blue"}}'
+        ng-attr-stroke-width='{{$ctrl.isSelected($index) && 3}}'
         filter='url(#shadow-1)'>
         </circle>
 <!--         <circle ng-show='node.isPressed'
         ng-attr-r='{{$ctrl.pressEffect.r}}' fill='white' ng-attr-fill-opacity="{{$ctrl.pressEffect.opacity}}">
         </circle>
- -->        <!-- <text text-anchor='middle' style='pointer-events: none;'>{{node.title}}</text> -->
-        <text text-anchor='middle' style='pointer-events: none;'>{{node.attributes[node.displayAttribute].value | number: 2}}</text>
+ -->
+         <text text-anchor='middle' style='pointer-events: none;'>{{node.getLabel()}}</text>
+        <!-- <text text-anchor='middle' style='pointer-events: none;'>{{node.attributes[node.displayAttribute].value | number: 2}}</text> -->
 <!--         <g ng-show='node.id == $ctrl.focusNodeIndex'>
             <circle ng-repeat="nodeAction in $ctrl.nodeActions"
             ng-attr-cx='{{nodeAction.x}}'
