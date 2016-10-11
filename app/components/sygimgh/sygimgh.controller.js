@@ -2,14 +2,12 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-10-10 18:02:03
+* @Last Modified time: 2016-10-11 14:03:02
 */
 
 'use strict';
 
 (function() {
-    'use strict';
-
     angular
     .module('sygimghApp')
     .controller('SygimghController', SygimghController);
@@ -165,38 +163,38 @@
             redraw();
         }
 
-        function accumulate(id, field) {
-            if (DAG.hasChild(DAG.nodes, id)) {
-                var node = DAG.nodes[id];
-                node[field] = 0;
-                for (var i = 0; i < node.children.length; i++) {
-                    node[field] += accumulate(node.children[i], field, deepInto);
-                }
-                return node[field];                
-            }
-            else {
-                return node[field];
-            }
-        }
+        // function accumulate(id, field) {
+        //     var node = DAG.nodes[id];
+        //     if (DAG.hasChild(DAG.nodes, id)) {
+        //         node[field] = 0;
+        //         for (var i = 0; i < node.children.length; i++) {
+        //             node[field] += accumulate(node.children[i], field, deepInto);
+        //         }
+        //         return node[field];                
+        //     }
+        //     else {
+        //         return node[field];
+        //     }
+        // }
 
-        function average(id, field) {
-            var node = DAG.nodes[id];
-            if (!node[field]) {
-                node[field] = 0;
-            }
+        // function average(id, field) {
+        //     var node = DAG.nodes[id];
+        //     if (!node[field]) {
+        //         node[field] = 0;
+        //     }
             
-            if (DAG.hasChild(DAG.nodes, id)) {
-                node[field] = 0;
-                for (var i = 0; i < node.children.length; i++) {
-                    node[field] += average(node.children[i], field, deepInto);
-                }
-                node[field] /= node.children.length;
-                return node[field];                
-            }
-            else {
-                return node[field];
-            }
-        }
+        //     if (DAG.hasChild(DAG.nodes, id)) {
+        //         node[field] = 0;
+        //         for (var i = 0; i < node.children.length; i++) {
+        //             node[field] += average(node.children[i], field, deepInto);
+        //         }
+        //         node[field] /= node.children.length;
+        //         return node[field];                
+        //     }
+        //     else {
+        //         return node[field];
+        //     }
+        // }
 
         // function trace(id, beforeFunc, deepInto, afterFunc) {
         //     beforeFunc(id);
@@ -253,7 +251,7 @@
             forceLayout
             .nodes($ctrl.nodes)
             .links($ctrl.links)
-            .on("tick", function(){$scope.$apply()})
+            .on('tick', function(){$scope.$apply();})
             .start();            
         }
 
@@ -262,142 +260,142 @@
             redraw();
         }
 
-        function onMouseDown(id) {
-            DAG.nodes[id].isPressed = true;
-            startPressEffect(id);
-            if ($ctrl.timeoutAddChild) {
-                $timeout.cancel($ctrl.timeoutAddChild);
-            }
-            $ctrl.timeoutAddChild = $timeout(function () {
-                addChild(id);
-            }, 500);
-        }
+        // function onMouseDown(id) {
+        //     DAG.nodes[id].isPressed = true;
+        //     startPressEffect(id);
+        //     if ($ctrl.timeoutAddChild) {
+        //         $timeout.cancel($ctrl.timeoutAddChild);
+        //     }
+        //     $ctrl.timeoutAddChild = $timeout(function () {
+        //         addChild(id);
+        //     }, 500);
+        // }
 
-        function onMouseUp(id) {
-            DAG.nodes[id].isPressed = false;
-            endPressEffect(id);
-            var noAddChild = true;
-            if ($ctrl.timeoutAddChild) {
-                noAddChild = $timeout.cancel($ctrl.timeoutAddChild);
-            }
-            if (noAddChild) {
-                triggerCollapes(id);
-            }
-        }
+        // function onMouseUp(id) {
+        //     DAG.nodes[id].isPressed = false;
+        //     endPressEffect(id);
+        //     var noAddChild = true;
+        //     if ($ctrl.timeoutAddChild) {
+        //         noAddChild = $timeout.cancel($ctrl.timeoutAddChild);
+        //     }
+        //     if (noAddChild) {
+        //         triggerCollapes(id);
+        //     }
+        // }
 
-        function onMouseLeave(id) {
-            DAG.nodes[id].isPressed = false;
-            endPressEffect(id);
-            var noAddChild = true;
-            if ($ctrl.timeoutAddChild) {
-                noAddChild = $timeout.cancel($ctrl.timeoutAddChild);
-            }
-        }
+        // function onMouseLeave(id) {
+        //     DAG.nodes[id].isPressed = false;
+        //     endPressEffect(id);
+        //     var noAddChild = true;
+        //     if ($ctrl.timeoutAddChild) {
+        //         noAddChild = $timeout.cancel($ctrl.timeoutAddChild);
+        //     }
+        // }
 
-        function startPressEffect(id) {
-            if ($ctrl.intervalPressEffect) {
-                $interval.cancel($ctrl.intervalPressEffect);
-                $ctrl.pressEffect.r = 0;
-                $ctrl.pressEffect.opacity = 0.6;
-            }
-            $ctrl.intervalPressEffect = $interval(function () {
-                $ctrl.pressEffect.r += 5;
-                $ctrl.pressEffect.opacity -= 0.02;
-            }, 50, 10);
-        }
+        // function startPressEffect(id) {
+        //     if ($ctrl.intervalPressEffect) {
+        //         $interval.cancel($ctrl.intervalPressEffect);
+        //         $ctrl.pressEffect.r = 0;
+        //         $ctrl.pressEffect.opacity = 0.6;
+        //     }
+        //     $ctrl.intervalPressEffect = $interval(function () {
+        //         $ctrl.pressEffect.r += 5;
+        //         $ctrl.pressEffect.opacity -= 0.02;
+        //     }, 50, 10);
+        // }
 
-        function endPressEffect(id) {
-            if ($ctrl.intervalPressEffect) {
-                $interval.cancel($ctrl.intervalPressEffect);
-                $ctrl.pressEffect.r = 0;
-            }            
-        }
+        // function endPressEffect(id) {
+        //     if ($ctrl.intervalPressEffect) {
+        //         $interval.cancel($ctrl.intervalPressEffect);
+        //         $ctrl.pressEffect.r = 0;
+        //     }            
+        // }
 
-        function flashScreen() {
-            var prevColor = $ctrl.screen.bgColor;
-            $ctrl.screen.bgColor = 'white';
-            $timeout(function () {
-                $ctrl.screen.bgColor = prevColor;
-            }, 10);
-        }
+        // function flashScreen() {
+        //     var prevColor = $ctrl.screen.bgColor;
+        //     $ctrl.screen.bgColor = 'white';
+        //     $timeout(function () {
+        //         $ctrl.screen.bgColor = prevColor;
+        //     }, 10);
+        // }
 
-        function openFileSelector() {
-            document.getElementById('input-file-selector').click();
-        }
+        // function openFileSelector() {
+        //     document.getElementById('input-file-selector').click();
+        // }
 
-        function openFile(event) {
-            FileIO.open(event.target.files[0]).then(function (data) {
-                if (data) {
-                    DAG.nodes = data;
-                    redraw();
-                }
-            });
-        }
+        // function openFile(event) {
+        //     FileIO.open(event.target.files[0]).then(function (data) {
+        //         if (data) {
+        //             DAG.nodes = data;
+        //             redraw();
+        //         }
+        //     });
+        // }
 
-        function getReducer(reducer, attribute) {
-            if (reducer == 'average') {
-                return function (nodes, id) {
-                    var node = nodes[id];
-                    if (DAG.hasChild(nodes, id)) {
-                        var sum = 0;
-                        for (var i = 0; i < node.children.length; i++) {
-                            var childNode = nodes[node.children[i]];
-                            sum += childNode.attributes[attribute].value;
-                        }
-                        node.attributes[attribute].value = sum / node.children.length;
-                    }
-                    node.displayAttribute = attribute;
-                };
-            }
-            else {
-                return lodash.noop;
-            }
-        }
+        // function getReducer(reducer, attribute) {
+        //     if (reducer === 'average') {
+        //         return function (nodes, id) {
+        //             var node = nodes[id];
+        //             if (DAG.hasChild(nodes, id)) {
+        //                 var sum = 0;
+        //                 for (var i = 0; i < node.children.length; i++) {
+        //                     var childNode = nodes[node.children[i]];
+        //                     sum += childNode.attributes[attribute].value;
+        //                 }
+        //                 node.attributes[attribute].value = sum / node.children.length;
+        //             }
+        //             node.displayAttribute = attribute;
+        //         };
+        //     }
+        //     else {
+        //         return lodash.noop;
+        //     }
+        // }
 
-        function reduce(attribute) {
-            var rootNode = DAG.nodes[$ctrl.rootNodeIndex];
-            var reducer = getReducer(rootNode.attributes[attribute].reducer, attribute);
+        // function reduce(attribute) {
+        //     var rootNode = DAG.nodes[$ctrl.rootNodeIndex];
+        //     var reducer = getReducer(rootNode.attributes[attribute].reducer, attribute);
 
-            var leaves = [];
-            for (var id in DAG.nodes) {
-               if (DAG.nodes[id].children.length == 0) {
-                    DAG.nodes[id].animTarget = DAG.nodes[id].attributes[attribute].value;
-                    DAG.nodes[id].attributes[attribute].value = 0;
-                    leaves.push(DAG.nodes[id]);
-               }
-            }
+        //     var leaves = [];
+        //     for (var id in DAG.nodes) {
+        //        if (DAG.nodes[id].children.length === 0) {
+        //             DAG.nodes[id].animTarget = DAG.nodes[id].attributes[attribute].value;
+        //             DAG.nodes[id].attributes[attribute].value = 0;
+        //             leaves.push(DAG.nodes[id]);
+        //        }
+        //     }
 
-            DAG.trace({
-                nodes: DAG.nodes,
-                id: $ctrl.rootNodeIndex,
-                beforeFunc: lodash.noop,
-                afterFunc: reducer
-            });
+        //     DAG.trace({
+        //         nodes: DAG.nodes,
+        //         id: $ctrl.rootNodeIndex,
+        //         beforeFunc: lodash.noop,
+        //         afterFunc: reducer
+        //     });
 
-            $ctrl.routineRenew = $interval(function () {
-                var allDone = true;
-                for (var i = 0; i < leaves.length; i++) {
-                    if (leaves[i].attributes[attribute].value >= leaves[i].animTarget) {
-                        leaves[i].attributes[attribute].value = leaves[i].animTarget;
-                    }
-                    else {
-                        leaves[i].attributes[attribute].value += 0.1;
-                        allDone = false;
-                    }
-                }
+        //     $ctrl.routineRenew = $interval(function () {
+        //         var allDone = true;
+        //         for (var i = 0; i < leaves.length; i++) {
+        //             if (leaves[i].attributes[attribute].value >= leaves[i].animTarget) {
+        //                 leaves[i].attributes[attribute].value = leaves[i].animTarget;
+        //             }
+        //             else {
+        //                 leaves[i].attributes[attribute].value += 0.1;
+        //                 allDone = false;
+        //             }
+        //         }
 
-                DAG.trace({
-                    nodes: DAG.nodes,
-                    id: $ctrl.rootNodeIndex,
-                    beforeFunc: lodash.noop,
-                    afterFunc: reducer
-                });
+        //         DAG.trace({
+        //             nodes: DAG.nodes,
+        //             id: $ctrl.rootNodeIndex,
+        //             beforeFunc: lodash.noop,
+        //             afterFunc: reducer
+        //         });
 
-                if (allDone) {
-                    $interval.cancel($ctrl.routineRenew);
-                }
-            }, 10);
-        }
+        //         if (allDone) {
+        //             $interval.cancel($ctrl.routineRenew);
+        //         }
+        //     }, 10);
+        // }
 
         function openManualEditor(index) {
             var manual = $ctrl.nodes[index].manual;

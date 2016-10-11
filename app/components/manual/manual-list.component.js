@@ -2,14 +2,12 @@
 * @Author: yglin
 * @Date:   2016-10-10 16:03:51
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-10-10 17:55:02
+* @Last Modified time: 2016-10-11 13:44:55
 */
 
 'use strict';
 
 (function() {
-    'use strict';
-
     angular.module('sygimghApp')
     .component('sygManualList',{
         templateUrl: 'components/manual/manual-list.tpl.html',

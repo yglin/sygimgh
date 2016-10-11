@@ -2,14 +2,12 @@
 * @Author: yglin
 * @Date:   2016-10-10 11:40:13
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-10-10 20:15:41
+* @Last Modified time: 2016-10-11 13:46:45
 */
 
 'use strict';
 
 (function() {
-    'use strict';
-
     angular
     .module('sygimghApp')
     .factory('Manual', ManualProvider);
@@ -51,7 +49,7 @@
         // Instance Methods
         Manual.prototype = {
             initAttributes: initAttributes
-        }
+        };
 
         // Class Methods
         Manual.isManual = isManual;

@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-10-10 11:23:47
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-10-10 20:25:25
+* @Last Modified time: 2016-10-11 13:55:49
 */
 
 'use strict';
@@ -20,7 +20,6 @@
         function Node(manual) {
             if (!Manual.isManual(manual)) {
                 throw(new Error('Node constructor needs a valid manual as parameter. Given parameter is ' + manual));
-                return;
             }
             this.id = uuid.v4();
             this.manual = manual;
@@ -36,7 +35,7 @@
             appendParent: appendParent,
             removeChild: removeChild,
             removeParent: removeParent
-        }
+        };
 
         function getLabel() {
             var attrHtml = '';

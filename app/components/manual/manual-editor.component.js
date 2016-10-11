@@ -2,14 +2,12 @@
 * @Author: yglin
 * @Date:   2016-10-10 17:46:51
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-10-10 17:54:38
+* @Last Modified time: 2016-10-11 13:44:46
 */
 
 'use strict';
 
 (function() {
-    'use strict';
-
     angular.module('sygimghApp')
     .component('sygManualEditor',{
         templateUrl: 'components/manual/manual-editor.tpl.html',

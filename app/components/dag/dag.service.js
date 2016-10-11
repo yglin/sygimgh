@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-07-09 20:00:54
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-10-10 17:13:21
+* @Last Modified time: 2016-10-11 13:42:30
 */
 
 (function() {
@@ -125,17 +125,17 @@
             
             function touch(nodes, id) {
                 if (recordStack.indexOf(id) >= 0) {
-                    console.error("Found a loop in DAG: " + recordStack.toString() + " --> " + id);
+                    console.error('Found a loop in DAG: ' + recordStack.toString() + ' --> ' + id);
                     gotALoop = true;
                 }
                 recordStack.push(id);
             }
 
-            function leave(nodes, id) {
+            function leave() {
                 recordStack.pop();
             }
 
-            function loopNotFound(nodes, id) {
+            function loopNotFound() {
                 return !gotALoop;
             }
 

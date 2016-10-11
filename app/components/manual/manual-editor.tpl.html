@@ -1,5 +1,7 @@
 <div>
     <h2>{{$ctrl.title}}</h2>
     <h5>{{$ctrl.manual.title}}</h5>
-    <!-- TODO: Manual Editor -->
+    <div ng-repeat="(key, attr) in $ctrl.manual.attributes">
+        <p>{{attr.type | json}}</p>
+    </div>
 </div>

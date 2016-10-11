@@ -2,13 +2,13 @@
   "node"     : true,
   "browser"  : true,
   "esnext"   : true,
-  "bitwise"  : true,
+  "bitwise"  : false,
   "camelcase": true,
   "curly"    : true,
   "eqeqeq"   : true,
   "immed"    : true,
   "indent"   : 2,
-  "latedef"  : true,
+  "latedef"  : "nofunc",
   "newcap"   : true,
   "noarg"    : true,
   "quotmark" : "single",
@@ -16,6 +16,7 @@
   "undef"    : true,
   "unused"   : true,
   "strict"   : true,
+  "validthis": true,
   "trailing" : false,
   "smarttabs": true,
   "white"    : false,
@@ -41,6 +42,7 @@
     "spyOn"                : false,
     "spyOnEvent"           : false,
     "waitsFor"             : false,
-    "xdescribe"            : false
+    "xdescribe"            : false,
+    "d3"                   : false
   }
 }
