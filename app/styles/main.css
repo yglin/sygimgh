@@ -81,3 +81,11 @@ body {
     border-bottom: 0;
   }
 }
+
+.syg-bottom-sheet {
+  max-height: 66vh;
+}
+
+.syg-bottom-sheet md-content{
+  max-height: 66vh;
+}

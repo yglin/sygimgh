@@ -1,7 +1,31 @@
-<div>
+<md-content>
     <h2>{{$ctrl.title}}</h2>
     <h5>{{$ctrl.manual.title}}</h5>
-    <div ng-repeat="(key, attr) in $ctrl.manual.attributes">
-        <p>{{attr.type | json}}</p>
+    <div ng-repeat="(key, attr) in $ctrl.manual.attributes"
+    layout='row' layout-padding>
+        <h5 flex='30'>{{attr.label}}</h5>
+        <h6 flex='30'>{{attr.type.label}}</h6>
+        <span flex></span>
     </div>
-</div>
+    <div layout='row'>
+        <md-input-container class='md-block' flex>
+            <label>新增屬性</label>
+            <input type='text' ng-model='$ctrl.newAttr.label'/>
+        </md-input-container>
+        <md-input-container class='md-block' flex='20'>
+            <label>類型</label>
+            <md-select ng-model='$ctrl.newAttr.type'>
+                <md-option ng-repeat='attrType in $ctrl.Attribute.TYPES' ng-value='attrType'>
+                    {{attrType.label}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <div>
+            <md-button class='md-fab md-mini md-primary'
+            ng-disabled='!$ctrl.newAttr.label || !$ctrl.newAttr.type'
+            ng-click='$ctrl.addNewAttribute()'>
+                <md-icon class='material-icons'>add</md-icon>
+            </md-button>
+        </div>
+    </div>
+</md-content>

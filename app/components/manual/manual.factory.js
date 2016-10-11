@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-10-10 11:40:13
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-10-11 13:46:45
+* @Last Modified time: 2016-10-11 15:41:47
 */
 
 'use strict';
@@ -48,11 +48,13 @@
 
         // Instance Methods
         Manual.prototype = {
-            initAttributes: initAttributes
+            initAttributes: initAttributes,
+            addAttribute: addAttribute
         };
 
         // Class Methods
         Manual.isManual = isManual;
+
 
         function initAttributes() {
             var attrs = {};
@@ -69,6 +71,10 @@
                 }
             }
             return attrs;
+        }
+
+        function addAttribute(attr) {
+            this.attributes[attr.label] = new Attribute(attr);
         }
 
         function isManual(obj) {
