@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-10-11 15:50:19
+* @Last Modified time: 2016-10-11 16:47:00
 */
 
 'use strict';
@@ -39,6 +39,7 @@
         // $ctrl.reduce = reduce;
         $ctrl.addChild = addChild;
         $ctrl.appendChild = appendChild;
+        $ctrl.openManualManager = openManualManager;
         $ctrl.openManualEditor = openManualEditor;
 
         var nodeVisualDefaults = {};
@@ -46,11 +47,13 @@
         var colorCategory = ['coral', 'burlywood', 'hotpink', 'deeppink', 'orange', 'gold', 'lightsalmon', 'mistyrose'];
         
         $ctrl.$onInit = function () {
-            $ctrl.graph.width = '960';
-            $ctrl.graph.height = '600';
+            var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+            var viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+            $ctrl.graph.width = viewportWidth;
+            $ctrl.graph.height = viewportHeight * 0.9;
 
-            $ctrl.screen.width = '800';
-            $ctrl.screen.height = '480';
+            $ctrl.screen.width = $ctrl.graph.width * 0.8;
+            $ctrl.screen.height = $ctrl.graph.height * 0.8;
             $ctrl.screen.bgColor = 'palegreen';
 
             nodeVisualDefaults.x = $ctrl.screen.width / 2;
@@ -396,11 +399,18 @@
         //         }
         //     }, 10);
         // }
+        // 
+        function openManualManager() {
+            $mdBottomSheet.show({
+                template: '<md-bottom-sheet class="syg-bottom-sheet"><md-content><syg-manual-list></syg-manual-list></md-content></md-bottom-sheet>',
+                clickOutsideToClose: true
+            });            
+        }
 
         function openManualEditor(index) {
             var manual = $ctrl.nodes[index].manual;
             $mdBottomSheet.show({
-                template: '<md-bottom-sheet class="syg-bottom-sheet"><syg-manual-editor manual-id="' + manual.id + '"></syg-manual-editor></md-bottom-sheet>',
+                template: '<md-bottom-sheet class="syg-bottom-sheet"><md-content><syg-manual-editor manual-id="' + manual.id + '"></md-content></syg-manual-editor></md-bottom-sheet>',
                 clickOutsideToClose: true
             });
         }

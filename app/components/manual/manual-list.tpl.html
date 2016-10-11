@@ -1,8 +1,11 @@
 <div class='manual-list'>
-    <h2>{{$ctrl.title}}</h2>
     <div ng-repeat="manual in $ctrl.manuals"
     class='manual-item'
-    ng-click='$ctrl.openManualEditor(manual)'>
-        <p>{{manual.title}}</p>
+    ng-click='$ctrl.openManualEditor(manual)'
+    layout='row' layout-padding>
+        <h3 flex='20'>{{manual.title}}</h3>
+        <div style='overflow: ellipsis;' flex='40' layout='row' layout-align='start center'>
+            <span ng-repeat="attr in manual.attributes">{{attr.label}}{{!$last && '，&nbsp;' || ''}}</span>
+        </div>
     </div>
 </div>
