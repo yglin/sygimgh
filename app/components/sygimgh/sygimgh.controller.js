@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-12-27 17:36:08
+* @Last Modified time: 2016-12-27 20:23:59
 */
 
 'use strict';
@@ -14,10 +14,10 @@
         .module('sygimghApp')
         .controller('SygimghController', SygimghController);
 
-    SygimghController.$inject = ['$scope', '$timeout', '$interval', 'lodash', 'FileIO', 'DAG'];
+    SygimghController.$inject = ['$scope', '$timeout', '$interval', 'lodash', 'FileIO', 'DAG', 'Node'];
 
     /* @ngInject */
-    function SygimghController($scope, $timeout, $interval, lodash, FileIO, DAG) {
+    function SygimghController($scope, $timeout, $interval, lodash, FileIO, DAG, Node) {
         var $ctrl = this;
         $ctrl.title = 'Sygimgh';
         $ctrl.graph = {};
@@ -39,7 +39,7 @@
         // $ctrl.openFileSelector = openFileSelector;
         // $ctrl.openFile = openFile;
         // $ctrl.reduce = reduce;
-        // $ctrl.addChild = addChild;
+        $ctrl.addChild = addChild;
         // $ctrl.appendChild = appendChild;
 
         var forceLayout;
@@ -159,38 +159,14 @@
             $ctrl.selectedNodes.length = 0;            
         }
 
-        // function addChild(id) {
-        //     var childID = DAG.appendChild($ctrl.nodes, id);
-        //     if (childID < 0) {
-        //         return;
-        //     }
-
-        //     var parentNode = $ctrl.nodes[id];
-        //     var childNode = $ctrl.nodes[childID];
-
-        //     childNode.title = 'new';
-        //     childNode.x = parentNode.x;
-        //     childNode.y = parentNode.y;
-        //     childNode.r = 50;
-
-        //     childNode.color = colorCategory[colorCategoryIndex];
-        //     colorCategoryIndex = (colorCategoryIndex + 1) % colorCategory.length;
-
-        //     childNode.collapse = false;
-
-        //     childNode.attributes = angular.copy(parentNode.attributes);
-        //     for (var key in childNode.attributes) {
-        //         childNode.attributes[key].value = childNode.attributes[key].default;                
-        //     }
-
-        //     // XXX Generate random value for completion
-        //     childNode.attributes.completion.value = Math.random() * 100;
-
-        //     // Visually expand parent node after adding child
-        //     parentNode.collapse = false;
-
-        //     redraw();
-        // }
+        function addChild(node) {
+            var newNode = Node.genRandomNode();
+            DAG.appendChild(node, newNode);
+            newNode.x = node.x;
+            newNode.y = node.y;
+            node.collapse = false;
+            redraw();
+        }
 
         // function appendChild(id, childID) {
         //     childID = DAG.appendChild($ctrl.nodes, id, childID);

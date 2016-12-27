@@ -2,13 +2,14 @@
 <div style='width:80vw;height:50px;' layout='row'>
     <input id='input-file-selector' type='file' style='display: none'>
     <!-- onchange='angular.element(this).scope().$ctrl.openFile(this.value)' /> -->
-    <md-button class='md-fab md-primary' ng-click='$ctrl.openFileSelector()'>
+<!--     <md-button class='md-fab md-primary' ng-click='$ctrl.openFileSelector()'>
         <md-icon class='material-icons'>folder</md-icon>
     </md-button>
     <md-button class='md-fab md-primary md-hue-2' ng-click="$ctrl.save($ctrl.nodes)">
         <md-icon class='material-icons'>save</md-icon>
     </md-button>
-    <md-button class='md-fab md-primary md-hue-1' ng-click='$ctrl.reduce("completion")'>
+ -->
+    <md-button class='md-fab md-primary md-hue-1' ng-show='$ctrl.selectedNodes.length == 1' ng-click='$ctrl.reduce($ctrl.selectedNodes[0])'>
         <md-icon class='material-icons'>autorenew</md-icon>
     </md-button>
     <md-button class='md-fab md-primary md-hue-4' ng-show='$ctrl.selectedNodes.length == 1' ng-click="$ctrl.addChild($ctrl.selectedNodes[0])">
