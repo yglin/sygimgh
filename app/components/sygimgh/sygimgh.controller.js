@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-12-27 16:58:05
+* @Last Modified time: 2016-12-27 17:07:33
 */
 
 'use strict';
@@ -260,15 +260,12 @@
         //     afterFunc(id);
         // }
         // 
-        function visualize(node) {
+
+        function draw(node) {
             lodash.defaults(node, $ctrl.graph.node);
             if (!node.color) {
                 node.color = lodash.sample($ctrl.graph.colorCategory);
             }
-        }
-
-        function draw(node) {
-            visualize(node);
             $ctrl.nodes.push(node);
         }
 
@@ -295,7 +292,7 @@
                 }
             });
 
-            forceLayout.start();            
+            forceLayout.start();
         }
 
         function triggerCollapes(node) {
