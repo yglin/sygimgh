@@ -48,7 +48,7 @@
     ></line>
     <g ng-repeat='node in $ctrl.nodes'
     ng-attr-transform='translate({{node.x}}, {{node.y}})'
-    ng-click='$ctrl.onClickNode($event, node.id)'
+    ng-click='$ctrl.onClickNode($event, node)'
     ng-dblclick='$ctrl.triggerCollapes(node)'
     style='outline: none;'>
         <circle

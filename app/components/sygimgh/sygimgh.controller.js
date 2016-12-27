@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-12-27 17:07:33
+* @Last Modified time: 2016-12-27 17:36:08
 */
 
 'use strict';
@@ -27,8 +27,8 @@
         $ctrl.selectedNodes = [];
         $ctrl.rootNode = undefined;
 
-        // $ctrl.onClickBackground = onClickBackground;
-        // $ctrl.onClickNode = onClickNode;
+        $ctrl.onClickBackground = onClickBackground;
+        $ctrl.onClickNode = onClickNode;
         $ctrl.triggerCollapes = triggerCollapes;
         // $ctrl.onMouseDown = onMouseDown;
         // $ctrl.onMouseUp = onMouseUp;
@@ -125,55 +125,39 @@
             redraw();
         };
 
-        // function onClickBackground() {
-        //     clearSelect();
-        // }
+        function onClickBackground() {
+            clearSelect();
+        }
 
-        // function onClickNode(event, id) {
-        //     if (event.ctrlKey || event.metaKey) {
-        //         addSelect(id);
-        //     }
-        //     else {
-        //         select(id);
-        //     }
-        // }
+        function onClickNode(event, node) {
+            if (event.ctrlKey || event.metaKey) {
+                if ($ctrl.selectedNodes.indexOf(node) >= 0) {
+                    deselect(node);
+                }
+                else {
+                    select(node);
+                }
+            }
+            else {
+                clearSelect();
+                select(node);
+            }
+        }
 
-        // function toggleSelectDisplay(id, isSelected) {
-        //     var node = $ctrl.nodes[id];
-        //     if (isSelected) {
-        //         node.strokeColor = 'blue';
-        //         node.strokeWidth = 3;
-        //     }
-        //     else {
-        //         node.strokeWidth = 0;
-        //     }
-        // }
+        function select(node) {
+            if ($ctrl.selectedNodes.indexOf(node) < 0) {
+                $ctrl.selectedNodes.push(node);
+                node.strokeColor = 'blue';
+                node.strokeWidth = 3;
+            }
+        }
 
-        // function select(id) {
-        //     clearSelect();
-        //     $ctrl.selectedNodes.push(id);
-        //     toggleSelectDisplay(id, true);
-        // }
-
-        // function addSelect(id) {
-        //     if ($ctrl.selectedNodes.indexOf(id) >= 0) {
-        //     // Already selected, remove selection
-        //         $ctrl.selectedNodes.splice($ctrl.selectedNodes.indexOf(id), 1);
-        //         toggleSelectDisplay(id, false);
-        //     }
-        //     else {
-        //     // Add to selection
-        //         $ctrl.selectedNodes.push(id);
-        //         toggleSelectDisplay(id, true);
-        //     }
-        // }
-
-        // function clearSelect() {
-        //     for (var i = 0; i < $ctrl.selectedNodes.length; i++) {
-        //         toggleSelectDisplay($ctrl.selectedNodes[i], false);
-        //     }
-        //     $ctrl.selectedNodes.length = 0;            
-        // }
+        function clearSelect() {
+            for (var i = 0; i < $ctrl.selectedNodes.length; i++) {
+                $ctrl.selectedNodes[i].strokeWidth = 0;
+            }
+            $ctrl.selectedNodes.length = 0;            
+        }
 
         // function addChild(id) {
         //     var childID = DAG.appendChild($ctrl.nodes, id);
