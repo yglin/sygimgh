@@ -17,6 +17,7 @@
     <md-button class='md-fab md-primary md-hue-5' ng-show='$ctrl.selectedNodes.length == 2' ng-click="$ctrl.appendChild($ctrl.selectedNodes[0], $ctrl.selectedNodes[1])" aria-label='Append Child'>
         <md-icon md-svg-icon='/images/icons/link_nodes.svg' style='color:white;fill:white;stroke:white;'></md-icon>
     </md-button>
+    <syg-node node='$ctrl.lastSelected()'></syg-node>
 </div>
 <div>
 <svg ng-attr-width='{{$ctrl.graph.width}}' ng-attr-height='{{$ctrl.graph.height}}' ng-cloak>
@@ -45,10 +46,10 @@
     ng-attr-x2='{{link.target.x}}'
     ng-attr-y2='{{link.target.y}}'>
     ></line>
-    <g ng-repeat='node in $ctrl.displayNodes'
+    <g ng-repeat='node in $ctrl.nodes'
     ng-attr-transform='translate({{node.x}}, {{node.y}})'
     ng-click='$ctrl.onClickNode($event, node.id)'
-    ng-dblclick='$ctrl.onDoubleclickNode(node.id)'
+    ng-dblclick='$ctrl.triggerCollapes(node)'
     style='outline: none;'>
         <circle
         ng-attr-r='{{node.r}}'
