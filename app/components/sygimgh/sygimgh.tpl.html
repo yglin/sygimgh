@@ -30,6 +30,9 @@
           <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
           <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
         </filter>
+        <marker id='arrow-head' markerWidth='10' markerHeight='10' refX='25' refY='3' orient='auto' markerUnits='strokeWidth'>
+            <path d="M0,0 L0,6 L9,3 z" ng-attr-fill='{{$ctrl.graph.link.color}}' />
+        </marker>
     </defs>
     <rect ng-attr-x='{{($ctrl.graph.width - $ctrl.screen.width) * 0.5}}'
     ng-attr-y='{{($ctrl.graph.height - $ctrl.screen.height) * 0.5}}'
@@ -40,12 +43,13 @@
     ng-click="$ctrl.onClickBackground()">
     </rect>
     <line ng-repeat='link in $ctrl.links'
-    style='stroke:{{link.color}};'
+    ng-attr-stroke='{{link.color}}'
     ng-attr-stroke-width='{{link.width}}'
     ng-attr-x1='{{link.source.x}}'
     ng-attr-y1='{{link.source.y}}'
     ng-attr-x2='{{link.target.x}}'
-    ng-attr-y2='{{link.target.y}}'>
+    ng-attr-y2='{{link.target.y}}'
+    marker-end="url(#arrow-head)">
     ></line>
     <g ng-repeat='node in $ctrl.nodes'
     ng-attr-transform='translate({{node.x}}, {{node.y}})'
@@ -59,7 +63,8 @@
         ng-attr-stroke-width='{{node.strokeWidth}}'
         filter='url(#shadow-1)'>
         </circle>
-<!--         <circle ng-show='node.isPressed'
+
+ <!--         <circle ng-show='node.isPressed'
         ng-attr-r='{{$ctrl.pressEffect.r}}' fill='white' ng-attr-fill-opacity="{{$ctrl.pressEffect.opacity}}">
         </circle>
  -->

@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-06 15:14:23
+* @Last Modified time: 2017-01-06 16:01:11
 */
 
 'use strict';
@@ -50,8 +50,8 @@
             $ctrl.graph.width = 960;
             $ctrl.graph.height = 600;
             $ctrl.graph.link = {
-                color: 'darkgreen',
-                width: 2
+                color: 'darkblue',
+                width: 3
             };
             $ctrl.graph.node = {
                 r: 50,
