@@ -9,8 +9,8 @@
         <md-icon class='material-icons'>save</md-icon>
     </md-button>
  -->
-    <md-button class='md-fab md-primary md-hue-1' ng-show='$ctrl.selectedNodes.length == 1' ng-click='$ctrl.reduce($ctrl.selectedNodes[0])'>
-        <md-icon class='material-icons'>autorenew</md-icon>
+    <md-button class='md-fab md-primary md-hue-1' ng-show='$ctrl.selectedNodes.length == 1' ng-click='$ctrl.applyMom($ctrl.selectedNodes[0])'>
+        <md-icon class='material-icons'>pregnant_woman</md-icon>
     </md-button>
     <md-button class='md-fab md-primary md-hue-4' ng-show='$ctrl.selectedNodes.length == 1' ng-click="$ctrl.addChild($ctrl.selectedNodes[0])">
         <md-icon class='material-icons'>add</md-icon>
@@ -62,8 +62,9 @@
 <!--         <circle ng-show='node.isPressed'
         ng-attr-r='{{$ctrl.pressEffect.r}}' fill='white' ng-attr-fill-opacity="{{$ctrl.pressEffect.opacity}}">
         </circle>
- -->        <!-- <text text-anchor='middle' style='pointer-events: none;'>{{node.title}}</text> -->
-        <text text-anchor='middle' style='pointer-events: none;'>{{node.attributes[node.displayAttribute].value | number: 2}}</text>
+ -->
+        <text text-anchor='middle' style='pointer-events: none;'>{{node.title}}</text>
+        <syg-ur-mom mom='$ctrl.mom' node='node'></syg-ur-mom>
 <!--         <g ng-show='node.id == $ctrl.focusNodeIndex'>
             <circle ng-repeat="nodeAction in $ctrl.nodeActions"
             ng-attr-cx='{{nodeAction.x}}'

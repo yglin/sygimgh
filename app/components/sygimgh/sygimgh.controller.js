@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-12-27 20:23:59
+* @Last Modified time: 2017-01-06 15:14:23
 */
 
 'use strict';
@@ -41,6 +41,7 @@
         // $ctrl.reduce = reduce;
         $ctrl.addChild = addChild;
         // $ctrl.appendChild = appendChild;
+        $ctrl.applyMom = applyMom;
 
         var forceLayout;
         // var colorCategoryIndex = Math.floor(Math.random() * colorCategory.length);
@@ -111,8 +112,15 @@
 
             // Setup d3 force layout
             forceLayout = d3.layout.force()
-            .charge(-1000)
-            .linkDistance(200)
+            .charge(-2000)
+            .linkDistance(function (link) {
+                var totalLinks = (link.source.parents && link.source.parents.length || 0) +
+                (link.source.children && link.source.children.length || 0) +
+                (link.target.children && link.target.children.length || 0) +
+                (link.target.children && link.target.children.length || 0);
+                var extension = totalLinks * 20;
+                return 100 + extension;
+            })
             .size([$ctrl.graph.width, $ctrl.graph.height]);
 
             forceLayout
@@ -120,7 +128,8 @@
             .links($ctrl.links)
             .on("tick", function(){$scope.$apply()});
 
-            $ctrl.rootNode = DAG.genRandomGraph();
+            $ctrl.rootNode = DAG.genRandomGraph().root;
+            $ctrl.rootNode.color = 'white';
             
             redraw();
         };
@@ -130,25 +139,22 @@
         }
 
         function onClickNode(event, node) {
-            if (event.ctrlKey || event.metaKey) {
-                if ($ctrl.selectedNodes.indexOf(node) >= 0) {
-                    deselect(node);
-                }
-                else {
-                    select(node);
-                }
-            }
-            else {
+            if (!(event.ctrlKey || event.metaKey)) {
                 clearSelect();
-                select(node);
             }
+            toggleSelect(node);
         }
 
-        function select(node) {
-            if ($ctrl.selectedNodes.indexOf(node) < 0) {
+        function toggleSelect(node) {
+            var index = $ctrl.selectedNodes.indexOf(node);
+            if (index < 0) {
                 $ctrl.selectedNodes.push(node);
                 node.strokeColor = 'blue';
                 node.strokeWidth = 3;
+            }
+            else {
+                $ctrl.selectedNodes.splice(index, 1);
+                node.strokeWidth = 0;
             }
         }
 
@@ -166,6 +172,21 @@
             newNode.y = node.y;
             node.collapse = false;
             redraw();
+        }
+
+        function applyMom(node) {
+            callMom()
+            .then(function (mom) {
+                if (mom) {
+                    $ctrl.mom = mom;
+                    $ctrl.mom.startNagging(node)
+                    .then(function (result) {
+                    }, function (error) {
+                    }, function (progress) {
+                        $scope.$apply();
+                    });
+                }
+            });
         }
 
         // function appendChild(id, childID) {
@@ -224,28 +245,48 @@
         function draw(node) {
             lodash.defaults(node, $ctrl.graph.node);
             if (!node.color) {
-                node.color = lodash.sample($ctrl.graph.colorCategory);
+                if (node.parents && node.parents.length && node.parents[0].color) {
+                    node.color = node.parents[0].color;
+                }
+                else{
+                    node.color = lodash.sample($ctrl.graph.colorCategory);
+                }
+
+                if (node.parents && node.parents.length && node.parents[0] === $ctrl.rootNode) {
+                    node.color = lodash.sample($ctrl.graph.colorCategory);                    
+                }
             }
             $ctrl.nodes.push(node);
+            if (node.parents && node.parents.length) {
+                for (var i = 0; i < node.parents.length; i++) {
+                    var parent = node.parents[i];
+                    $ctrl.links.push({
+                        source: parent,
+                        target: node,
+                        color: $ctrl.graph.link.color,
+                        width: $ctrl.graph.link.width
+                    });
+                }
+            }
         }
 
-        function link(node, parent) {
-            if (!(node && parent)) {
-                return;
-            }
-            $ctrl.links.push({
-                source: parent,
-                target: node,
-                color: $ctrl.graph.link.color,
-                width: $ctrl.graph.link.width
-            });
-        }
+        // function link(node, parent) {
+        //     if (!(node && parent)) {
+        //         return;
+        //     }
+        //     $ctrl.links.push({
+        //         source: parent,
+        //         target: node,
+        //         color: $ctrl.graph.link.color,
+        //         width: $ctrl.graph.link.width
+        //     });
+        // }
 
         function redraw() {
             $ctrl.links.length = 0;
             $ctrl.nodes.length = 0;
             DAG.trace($ctrl.rootNode, {
-                linkFunc: link,
+                // linkFunc: link,
                 beforeFunc: draw,
                 isDeeperFunc: function (node) {
                     return DAG.hasChild(node) && !node.collapse;

@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-07-09 20:00:54
 * @Last Modified by:   yglin
-* @Last Modified time: 2016-12-27 16:49:17
+* @Last Modified time: 2017-01-06 14:36:43
 */
 
 (function() {
@@ -41,9 +41,7 @@
             var touched = [];
             recursive(rootNode, null);
 
-            function recursive(node, parent) {
-                options.linkFunc(node, parent);
-
+            function recursive(node) {
                 if (touched.indexOf(node) >= 0) {
                     options.onLoopDetected(node);
                     return;
@@ -52,7 +50,7 @@
                 options.beforeFunc(node);
                 if(options.isDeeperFunc(node)){
                     for (var i = 0; i < node.children.length; i++) {
-                        recursive(node.children[i], node);
+                        recursive(node.children[i]);
                     }                
                 }
                 options.afterFunc(node);            
@@ -126,15 +124,19 @@
 
         function genRandomGraph(nodeCount) {
             nodeCount = nodeCount || 10;
-            var nodes = [];
+            var nodes = {};
             var rootNode = Node.genRandomNode();
-            nodes.push(rootNode);
+            rootNode.title = '統治世界';
+            nodes[rootNode.id] = rootNode;
             for (var i = 0; i < nodeCount; i++) {
                 var newNode = Node.genRandomNode();
                 appendChild(lodash.sample(nodes), newNode);
-                nodes.push(newNode);
+                nodes[newNode.id] = newNode;
             }
-            return rootNode;
+            return {
+                nodes: nodes,
+                root: rootNode
+            };
         }
     }
 })();
