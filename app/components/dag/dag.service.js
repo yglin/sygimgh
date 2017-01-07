@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-07-09 20:00:54
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-06 14:36:43
+* @Last Modified time: 2017-01-07 11:24:01
 */
 
 (function() {
@@ -77,6 +77,10 @@
                 child.parents = [];
             }
             child.parents.push(parent);
+
+            if (!child.mama) {
+                child.mama = parent.mama;
+            }
         }
 
         function removeChild(parent, child) {
@@ -123,10 +127,12 @@
         // }
 
         function genRandomGraph(nodeCount) {
+            var mama = yourMama();
             nodeCount = nodeCount || 10;
             var nodes = {};
             var rootNode = Node.genRandomNode();
             rootNode.title = '統治世界';
+            rootNode.mama = mama;
             nodes[rootNode.id] = rootNode;
             for (var i = 0; i < nodeCount; i++) {
                 var newNode = Node.genRandomNode();
@@ -137,6 +143,16 @@
                 nodes: nodes,
                 root: rootNode
             };
+        }
+
+        function yourMama() {
+            return {
+                nagging: nagging
+            };
+
+            function nagging(node) {
+                node.loser = (Math.random() > 0.5);
+            }
         }
     }
 })();

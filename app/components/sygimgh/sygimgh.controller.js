@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-06 16:01:11
+* @Last Modified time: 2017-01-07 10:59:15
 */
 
 'use strict';
@@ -41,7 +41,8 @@
         // $ctrl.reduce = reduce;
         $ctrl.addChild = addChild;
         // $ctrl.appendChild = appendChild;
-        $ctrl.applyMom = applyMom;
+        // $ctrl.applyMom = applyMom;
+        $ctrl.startNagging = startNagging;
 
         var forceLayout;
         // var colorCategoryIndex = Math.floor(Math.random() * colorCategory.length);
@@ -174,20 +175,20 @@
             redraw();
         }
 
-        function applyMom(node) {
-            callMom()
-            .then(function (mom) {
-                if (mom) {
-                    $ctrl.mom = mom;
-                    $ctrl.mom.startNagging(node)
-                    .then(function (result) {
-                    }, function (error) {
-                    }, function (progress) {
-                        $scope.$apply();
-                    });
-                }
-            });
-        }
+        // function applyMom(node) {
+        //     callMom()
+        //     .then(function (mama) {
+        //         if (mama) {
+        //             $ctrl.mama = mama;
+        //             $ctrl.mama.startNagging(node)
+        //             .then(function (result) {
+        //             }, function (error) {
+        //             }, function (progress) {
+        //                 $scope.$apply();
+        //             });
+        //         }
+        //     });
+        // }
 
         // function appendChild(id, childID) {
         //     childID = DAG.appendChild($ctrl.nodes, id, childID);
@@ -300,6 +301,16 @@
             // console.log('click on node ' + id);
             node.collapse = !node.collapse;
             redraw();
+        }
+
+        function startNagging(node) {
+            DAG.trace(node, {
+                afterFunc: function (node) {
+                    if (node.mama && typeof node.mama.nagging === 'function') {
+                        node.mama.nagging(node);
+                    }
+                }
+            });
         }
 
         // function onMouseDown(id) {
