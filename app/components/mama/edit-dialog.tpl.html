@@ -1,0 +1,19 @@
+<md-dialog aria-label='Mama Edit'>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+        <md-icon class='material-icons' aria-label="Close dialog">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content layout-padding>
+    <h3>function (node) {</h3>
+    <textarea style='margin-left: 30px;' ng-model='$ctrl.postNaggingSource' rows='10' cols='80'>
+    </textarea>
+    <h3>}</h3>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button class='md-primary md-raised' ng-click='$ctrl.submit()'>確定</md-button>
+  </md-dialog-actions>
+</md-dialog>

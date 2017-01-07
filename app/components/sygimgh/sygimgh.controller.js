@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-07 10:59:15
+* @Last Modified time: 2017-01-07 16:10:55
 */
 
 'use strict';
@@ -14,10 +14,10 @@
         .module('sygimghApp')
         .controller('SygimghController', SygimghController);
 
-    SygimghController.$inject = ['$scope', '$timeout', '$interval', 'lodash', 'FileIO', 'DAG', 'Node'];
+    SygimghController.$inject = ['$scope', '$timeout', '$interval', 'lodash', 'FileIO', 'DAG', 'Node', 'Mama'];
 
     /* @ngInject */
-    function SygimghController($scope, $timeout, $interval, lodash, FileIO, DAG, Node) {
+    function SygimghController($scope, $timeout, $interval, lodash, FileIO, DAG, Node, Mama) {
         var $ctrl = this;
         $ctrl.title = 'Sygimgh';
         $ctrl.graph = {};
@@ -304,13 +304,8 @@
         }
 
         function startNagging(node) {
-            DAG.trace(node, {
-                afterFunc: function (node) {
-                    if (node.mama && typeof node.mama.nagging === 'function') {
-                        node.mama.nagging(node);
-                    }
-                }
-            });
+            var mama = new Mama();
+            mama.nagging(node);
         }
 
         // function onMouseDown(id) {

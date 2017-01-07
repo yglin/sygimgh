@@ -70,6 +70,10 @@
         </circle>
  -->
         <text text-anchor='middle' style='pointer-events: none;'>{{node.title}}</text>
+        <g ng-show='node.isTracing' ng-attr-transform='translate(-{{node.r}}, -{{node.r}})'>
+            <image width='100' height='100' xlink:href='images/magnify.svg'>
+            </image>            
+        </g>
         <!-- <syg-ur-mom mom='$ctrl.mom' node='node'></syg-ur-mom> -->
 <!--         <g ng-show='node.id == $ctrl.focusNodeIndex'>
             <circle ng-repeat="nodeAction in $ctrl.nodeActions"
