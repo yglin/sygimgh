@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-07 16:10:55
+* @Last Modified time: 2017-01-08 11:28:25
 */
 
 'use strict';
@@ -287,9 +287,8 @@
             $ctrl.links.length = 0;
             $ctrl.nodes.length = 0;
             DAG.trace($ctrl.rootNode, {
-                // linkFunc: link,
-                beforeFunc: draw,
-                isDeeperFunc: function (node) {
+                preTrace: draw,
+                isFurther: function (node) {
                     return DAG.hasChild(node) && !node.collapse;
                 }
             });

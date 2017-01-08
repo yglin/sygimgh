@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2017-01-07 15:31:01
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-07 17:08:15
+* @Last Modified time: 2017-01-08 11:30:21
 */
 
 'use strict';
@@ -49,8 +49,8 @@
       }).then(function (mama) {
         lodash.extend(self, mama);
         DAG.trace(node, {
-            beforeFunc: self.preNagging,
-            afterFunc: self.postNagging,
+            preTrace: self.preNagging,
+            assess: self.postNagging,
             postDelay: 1000
         });
       })
