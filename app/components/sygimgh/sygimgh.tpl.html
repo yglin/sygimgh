@@ -46,53 +46,54 @@ ng-cloak>
     ng-click="$ctrl.onClickBackground()">
     </rect>
     <g class='svg-pan-zoom_viewport'>
-    <line ng-repeat='link in $ctrl.links'
-    ng-attr-stroke='{{link.color}}'
-    ng-attr-stroke-width='{{link.width}}'
-    ng-attr-x1='{{link.source.x}}'
-    ng-attr-y1='{{link.source.y}}'
-    ng-attr-x2='{{link.target.x}}'
-    ng-attr-y2='{{link.target.y}}'
-    marker-end="url(#arrow-head)">
-    ></line>
-    <g ng-repeat='node in $ctrl.nodes'
-    ng-attr-transform='translate({{node.x}}, {{node.y}})'
-    ng-click='$ctrl.onClickNode($event, node)'
-    ng-dblclick='$ctrl.triggerCollapes(node)'
-    style='outline: none;'>
-        <circle
-        ng-attr-r='{{node.r}}'
-        ng-attr-fill='{{node.color}}'
-        ng-attr-stroke='{{node.strokeColor}}'
-        ng-attr-stroke-width='{{node.strokeWidth}}'
-        filter='url(#shadow-1)'>
-        </circle>
-
- <!--         <circle ng-show='node.isPressed'
-        ng-attr-r='{{$ctrl.pressEffect.r}}' fill='white' ng-attr-fill-opacity="{{$ctrl.pressEffect.opacity}}">
-        </circle>
- -->
-        <text text-anchor='middle' style='pointer-events: none;'>{{node.title}}</text>
-        <g ng-show='node.isTracing' ng-attr-transform='translate(-{{node.r}}, -{{node.r}})'>
-            <image width='100' height='100' xlink:href='images/magnify.svg'>
-            </image>            
-        </g>
-        <!-- <syg-ur-mom mom='$ctrl.mom' node='node'></syg-ur-mom> -->
-<!--         <g ng-show='node.id == $ctrl.focusNodeIndex'>
-            <circle ng-repeat="nodeAction in $ctrl.nodeActions"
-            ng-attr-cx='{{nodeAction.x}}'
-            ng-attr-cy='{{nodeAction.y}}'
-            r='20'
-            fill='lime'
-            >
+        <rect x='0' y='0' ng-attr-width='{{$ctrl.graph.width}}' ng-attr-height='{{$ctrl.graph.height}}' fill='none'></rect>
+        <line ng-repeat='link in $ctrl.links'
+        ng-attr-stroke='{{link.color}}'
+        ng-attr-stroke-width='{{link.width}}'
+        ng-attr-x1='{{link.source.x}}'
+        ng-attr-y1='{{link.source.y}}'
+        ng-attr-x2='{{link.target.x}}'
+        ng-attr-y2='{{link.target.y}}'
+        marker-end="url(#arrow-head)">
+        ></line>
+        <g ng-repeat='node in $ctrl.nodes'
+        ng-attr-transform='translate({{node.x}}, {{node.y}})'
+        ng-click='$ctrl.onClickNode($event, node)'
+        ng-dblclick='$ctrl.triggerCollapes(node)'
+        style='outline: none;'>
+            <circle
+            ng-attr-r='{{node.r}}'
+            ng-attr-fill='{{node.color}}'
+            ng-attr-stroke='{{node.strokeColor}}'
+            ng-attr-stroke-width='{{node.strokeWidth}}'
+            filter='url(#shadow-1)'>
             </circle>
+
+     <!--         <circle ng-show='node.isPressed'
+            ng-attr-r='{{$ctrl.pressEffect.r}}' fill='white' ng-attr-fill-opacity="{{$ctrl.pressEffect.opacity}}">
+            </circle>
+     -->
+            <text text-anchor='middle' style='pointer-events: none;'>{{node.title}}</text>
+            <g ng-show='node.inScolding' ng-attr-transform='translate(-{{node.r}}, -{{node.r}})'>
+                <image width='100' height='100' xlink:href='images/magnify.svg'>
+                </image>            
+            </g>
+            <!-- <syg-ur-mom mom='$ctrl.mom' node='node'></syg-ur-mom> -->
+    <!--         <g ng-show='node.id == $ctrl.focusNodeIndex'>
+                <circle ng-repeat="nodeAction in $ctrl.nodeActions"
+                ng-attr-cx='{{nodeAction.x}}'
+                ng-attr-cy='{{nodeAction.y}}'
+                r='20'
+                fill='lime'
+                >
+                </circle>
+            </g>
+     -->    
+            <g ng-show='node.loser' ng-attr-transform='translate(-{{node.r * 2.5}}, -{{node.r * 2.5}})'>
+                <image width='100' height='100' xlink:href='images/speech-bubble.svg'>
+                </image>
+            </g>
         </g>
- -->    
-        <g ng-show='node.loser' ng-attr-transform='translate(-{{node.r * 2.5}}, -{{node.r * 2.5}})'>
-            <image width='100' height='100' xlink:href='images/speech-bubble.svg'>
-            </image>
-        </g>
-    </g>
     </g>
 </svg>
 </div>

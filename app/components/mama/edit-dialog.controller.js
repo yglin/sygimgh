@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2017-01-07 16:01:25
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-07 17:13:11
+* @Last Modified time: 2017-01-09 14:46:24
 */
 
 'use strict';
@@ -26,7 +26,7 @@
     ////////////////
 
     function activate() {
-      $ctrl.postNaggingSource = extractFunctionBody($ctrl.mama.postNagging);
+      $ctrl.naggingSource = extractFunctionBody($ctrl.mama.nagging);
     }
 
     function cancel() {
@@ -34,7 +34,7 @@
     }
 
     function submit() {
-      $ctrl.mama.postNagging = new Function('node', $ctrl.postNaggingSource);
+      $ctrl.mama.nagging = new Function('node', $ctrl.naggingSource);
       $mdDialog.hide($ctrl.mama);
     }
 

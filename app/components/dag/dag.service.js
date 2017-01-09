@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-07-09 20:00:54
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-08 11:34:23
+* @Last Modified time: 2017-01-09 14:35:23
 */
 
 (function() {
@@ -34,6 +34,7 @@
             options = options || {};
             options.onLoopDetected = typeof options.onLoopDetected === 'function' ? options.onLoopDetected : lodash.noop;
             options.preTrace = typeof options.preTrace === 'function' ? options.preTrace : lodash.noop;
+            options.postTrace = typeof options.postTrace === 'function' ? options.postTrace : lodash.noop;
             options.isFurther = typeof options.isFurther === 'function' ? options.isFurther : self.hasChild;
             options.reduce = typeof options.reduce === 'function' ? options.reduce : lodash.noop;
             options.assess = typeof options.assess === 'function' ? options.assess : lodash.noop;
@@ -50,7 +51,6 @@
 
                 var done = $q.defer();
 
-                node.isTracing = true;
                 options.preTrace(node);
 
                 var childrenPromises = [];
@@ -66,8 +66,8 @@
                         var reducedValue = options.reduce(node, results);
                         node.reducedValue = reducedValue;
                         options.assess(node, reducedValue);
+                        options.postTrace(node);
                         touched.push(node);
-                        node.isTracing = false;
                         done.resolve(reducedValue);                        
                     }, options.postDelay);
                 });

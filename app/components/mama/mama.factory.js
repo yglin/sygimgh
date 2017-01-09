@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2017-01-07 15:31:01
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-08 11:30:21
+* @Last Modified time: 2017-01-09 14:42:48
 */
 
 'use strict';
@@ -17,24 +17,30 @@
   /* @ngInject */
   function MamaProvider($log, $mdDialog, DAG, lodash) {
 
-    Mama.prototype.nagging = nagging;
+    Mama.prototype.startNagging = startNagging;
 
     return Mama;
 
     function Mama(argument) {
       this.preNagging = preNagging;
+      this.nagging = nagging
       this.postNagging = postNagging;
     }
 
     function preNagging(node) {
       node.loser = false;
-    }
-
-    function postNagging(node) {
-      node.loser = (Math.random() > 0.5);
+      node.inScolding = true;
     }
 
     function nagging(node) {
+      node.loser = (Math.random() > 0.5);
+    }
+
+    function postNagging(node) {
+      node.inScolding = false;
+    }
+
+    function startNagging(node) {
       var self = this;
 
       $mdDialog.show({
@@ -50,7 +56,8 @@
         lodash.extend(self, mama);
         DAG.trace(node, {
             preTrace: self.preNagging,
-            assess: self.postNagging,
+            assess: self.nagging,
+            postTrace: self.postNagging,
             postDelay: 1000
         });
       })
