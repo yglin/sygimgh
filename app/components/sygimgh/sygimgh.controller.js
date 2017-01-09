@@ -2,7 +2,10 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-08 11:28:25
+* @Last Modified time: 2017-01-09 14:26:56
+*
+* A simple angular wrapper directive for https://github.com/ariutta/svg-pan-zoom
+* 
 */
 
 'use strict';
@@ -110,6 +113,18 @@
 
             // angular.element(document.getElementById('input-file-selector'))
             // .bind('change', $ctrl.openFile);
+            
+            // Setup svg-pan-zoom controller
+            $ctrl.svgPanZoomOptions = {
+                zoomEnabled: true,
+                dblClickZoomEnabled: false,
+                controlIconsEnabled: true,
+                fit: false,
+                center: false,
+                contain: false,
+                minZoom: 0.1,
+                maxZoom: 10              
+            };
 
             // Setup d3 force layout
             forceLayout = d3.layout.force()
