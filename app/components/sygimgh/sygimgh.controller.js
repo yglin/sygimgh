@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-09 14:44:33
+* @Last Modified time: 2017-01-09 15:15:48
 *
 * A simple angular wrapper directive for https://github.com/ariutta/svg-pan-zoom
 * 
@@ -165,19 +165,13 @@
             var index = $ctrl.selectedNodes.indexOf(node);
             if (index < 0) {
                 $ctrl.selectedNodes.push(node);
-                node.strokeColor = 'blue';
-                node.strokeWidth = 3;
             }
             else {
                 $ctrl.selectedNodes.splice(index, 1);
-                node.strokeWidth = 0;
             }
         }
 
         function clearSelect() {
-            for (var i = 0; i < $ctrl.selectedNodes.length; i++) {
-                $ctrl.selectedNodes[i].strokeWidth = 0;
-            }
             $ctrl.selectedNodes.length = 0;            
         }
 

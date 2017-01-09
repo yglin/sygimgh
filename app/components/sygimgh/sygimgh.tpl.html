@@ -64,9 +64,11 @@ ng-cloak>
             <circle
             ng-attr-r='{{node.r}}'
             ng-attr-fill='{{node.color}}'
-            ng-attr-stroke='{{node.strokeColor}}'
-            ng-attr-stroke-width='{{node.strokeWidth}}'
             filter='url(#shadow-1)'>
+            </circle>
+            <circle ng-show='$ctrl.selectedNodes.indexOf(node) >= 0'
+            ng-attr-r='{{node.r}}'
+            fill='none' stroke='blue' stroke-width='3'>
             </circle>
 
      <!--         <circle ng-show='node.isPressed'
