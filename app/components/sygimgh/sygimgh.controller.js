@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-09 15:15:48
+* @Last Modified time: 2017-01-09 15:31:07
 *
 * A simple angular wrapper directive for https://github.com/ariutta/svg-pan-zoom
 * 
@@ -312,8 +312,8 @@
         }
 
         function startNagging(node) {
-            var mama = new Mama();
-            mama.startNagging(node);
+            $ctrl.mama = new Mama();
+            $ctrl.mama.startNagging(node);
         }
 
         // function onMouseDown(id) {

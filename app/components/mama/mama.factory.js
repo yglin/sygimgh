@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2017-01-07 15:31:01
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-09 14:42:48
+* @Last Modified time: 2017-01-09 19:26:43
 */
 
 'use strict';
@@ -18,6 +18,8 @@
   function MamaProvider($log, $mdDialog, DAG, lodash) {
 
     Mama.prototype.startNagging = startNagging;
+    Mama.prototype.isNaggingOn = isNaggingOn;
+    Mama.prototype.isLoser = isLoser;
 
     return Mama;
 
@@ -28,16 +30,21 @@
     }
 
     function preNagging(node) {
-      node.loser = false;
-      node.inScolding = true;
     }
 
     function nagging(node) {
-      node.loser = (Math.random() > 0.5);
+      return (Math.random() > 0.5);
     }
 
     function postNagging(node) {
-      node.inScolding = false;
+    }
+
+    function isNaggingOn(node) {
+      return node.inNagging;
+    }
+
+    function isLoser(node) {
+      return node.isLoser;
     }
 
     function startNagging(node) {
@@ -55,9 +62,18 @@
       }).then(function (mama) {
         lodash.extend(self, mama);
         DAG.trace(node, {
-            preTrace: self.preNagging,
-            assess: self.nagging,
-            postTrace: self.postNagging,
+            preTrace: function (node) {
+              node.isLoser = false;
+              node.inNagging = true;
+              self.preNagging(node);
+            },
+            assess: function (node) {
+              node.isLoser = self.nagging(node);
+            },
+            postTrace: function (node) {
+              node.inNagging = false;
+              self.postNagging(node);
+            },
             postDelay: 1000
         });
       })
