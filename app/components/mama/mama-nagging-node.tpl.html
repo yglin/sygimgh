@@ -1,9 +1,9 @@
-<g ng-show='$ctrl.mama.isNaggingOn($ctrl.node)' ng-attr-transform='translate(-{{$ctrl.node.r}}, -{{$ctrl.node.r}})'>
-  <image width='100' height='100' xlink:href='images/magnify.svg'>
+<g ng-if='$ctrl.mama.isNaggingOn($ctrl.node)' ng-attr-transform='translate(-{{$ctrl.node.r}}, -{{$ctrl.node.r}})'>
+  <image ng-if='::$ctrl.mama.onNaggingImage' ng-attr-width='{{$ctrl.node.r * 2}}' ng-attr-height='{{$ctrl.node.r * 2}}' ng-href='{{$ctrl.mama.onNaggingImage}}' xlink:href=''>
   </image>            
 </g>
-<g ng-show='$ctrl.mama.isLoser($ctrl.node)' ng-attr-transform='translate(-{{$ctrl.node.r * 2.5}}, -{{$ctrl.node.r * 2.5}})'>
-  <image width='100' height='100' xlink:href='images/speech-bubble.svg'>
+<g ng-show='$ctrl.mama.isLoser($ctrl.node)' ng-attr-transform='translate(-{{$ctrl.node.r}}, -{{$ctrl.node.r}})'>
+  <image ng-if='::$ctrl.mama.loserImage' ng-attr-width='{{$ctrl.node.r}}' ng-attr-height='{{$ctrl.node.r}}' ng-href='{{$ctrl.mama.loserImage}}' xlink:href=''>
   </image>
 </g>
 

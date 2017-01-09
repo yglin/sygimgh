@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2017-01-07 15:31:01
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-09 19:26:43
+* @Last Modified time: 2017-01-09 19:53:42
 */
 
 'use strict';
@@ -27,6 +27,8 @@
       this.preNagging = preNagging;
       this.nagging = nagging
       this.postNagging = postNagging;
+      this.onNaggingImage = 'https://media.giphy.com/media/l2Je98HyT1H61VBYs/giphy.gif';
+      this.loserImage = 'http://www.transinfinity.com/images/simpsons/lisasimpsonloser.jpg';
     }
 
     function preNagging(node) {
