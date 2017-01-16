@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2017-01-07 15:31:01
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-09 19:53:42
+* @Last Modified time: 2017-01-16 11:52:28
 */
 
 'use strict';
@@ -23,10 +23,12 @@
 
     return Mama;
 
-    function Mama(argument) {
+    function Mama() {
       this.preNagging = preNagging;
-      this.nagging = nagging
+      this.nagging = nagging;
       this.postNagging = postNagging;
+      this.reduceSelect = undefined;
+      this.reduce = lodash.noop;
       this.onNaggingImage = 'https://media.giphy.com/media/l2Je98HyT1H61VBYs/giphy.gif';
       this.loserImage = 'http://www.transinfinity.com/images/simpsons/lisasimpsonloser.jpg';
     }
@@ -64,19 +66,25 @@
       }).then(function (mama) {
         lodash.extend(self, mama);
         DAG.trace(node, {
-            preTrace: function (node) {
-              node.isLoser = false;
-              node.inNagging = true;
-              self.preNagging(node);
-            },
-            assess: function (node) {
-              node.isLoser = self.nagging(node);
-            },
-            postTrace: function (node) {
-              node.inNagging = false;
-              self.postNagging(node);
-            },
-            postDelay: 1000
+          preTrace: function (node) {
+            node.isLoser = false;
+            node.inNagging = true;
+            node.showChromosomes = [];
+            self.preNagging(node);
+          },
+          assess: function (node) {
+            node.isLoser = self.nagging(node);
+          },
+          postTrace: function (node) {
+            node.inNagging = false;
+            self.postNagging(node);
+            if (self.reduceSelect) {
+              node.showChromosomes.push(self.reduceSelect);
+            }
+          },
+          reduceSelect: self.reduceSelect,
+          reduce: self.reduce,
+          delay: 1000
         });
       })
       .catch(function (error) {

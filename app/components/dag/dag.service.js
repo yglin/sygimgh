@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-07-09 20:00:54
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-09 14:35:23
+* @Last Modified time: 2017-01-15 11:37:19
 */
 
 (function() {
@@ -36,9 +36,10 @@
             options.preTrace = typeof options.preTrace === 'function' ? options.preTrace : lodash.noop;
             options.postTrace = typeof options.postTrace === 'function' ? options.postTrace : lodash.noop;
             options.isFurther = typeof options.isFurther === 'function' ? options.isFurther : self.hasChild;
-            options.reduce = typeof options.reduce === 'function' ? options.reduce : lodash.noop;
+            options.reduceSelect = (options.reduceSelect in rootNode) ? options.reduceSelect : 'reduced';
+            options.reduce = (typeof options.reduce === 'function' && (options.reduceSelect in rootNode)) ? options.reduce : lodash.noop;
             options.assess = typeof options.assess === 'function' ? options.assess : lodash.noop;
-            options.postDelay = typeof options.postDelay === 'number' ? options.postDelay : 0;
+            options.delay = typeof options.delay === 'number' ? Math.max(options.delay, 0) : 0;
 
             var touched = [];
             recursive(rootNode, null);
@@ -56,25 +57,30 @@
                 var childrenPromises = [];
                 if(options.isFurther(node)){
                     for (var i = 0; i < node.children.length; i++) {
-                        childrenPromises.push(recursive(node.children[i]));
+                        var childPromise = recursive(node.children[i]);
+                        childrenPromises.push(childPromise);
                     }                
                 }
 
                 $q.all(childrenPromises)
-                .then(function (results) {
+                .then(function (reducedValues) {
                     $timeout(function () {
-                        var reducedValue = options.reduce(node, results);
-                        node.reducedValue = reducedValue;
-                        options.assess(node, reducedValue);
+                        if (!lodash.isEmpty(reducedValues)) {
+                            node[options.reduceSelect] = options.reduce(reducedValues);
+                        }
+                        options.assess(node);
                         options.postTrace(node);
                         touched.push(node);
-                        done.resolve(reducedValue);                        
-                    }, options.postDelay);
+                        done.resolve(node[options.reduceSelect]);                        
+                    }, options.delay);
+                })
+                .catch(function (error) {
+                    node.error = error;
+                    done.reject(error);
                 });
 
                 return done.promise;
             }
-
         }
 
         function hasChild(node) {

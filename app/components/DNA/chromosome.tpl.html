@@ -1,0 +1,6 @@
+<g ng-attr-width='{{$ctrl.size}}' ng-attr-height='{{$ctrl.size}}'>
+  <g ng-attr-transform='translate(0, {{$ctrl.size * 0.9}})' ng-init='$ctrl.animatePercentage()'>
+    <line x1='0' y1='0' ng-attr-x2='{{$ctrl.value}}' y2='0' style="stroke:rgb(255,0,0);stroke-width:10"></line>
+    <text ng-attr-x='{{$ctrl.value}}' text-anchor='start' style='pointer-events: none;'>{{$ctrl.value | number:0}}</text>
+  </g>
+</g>

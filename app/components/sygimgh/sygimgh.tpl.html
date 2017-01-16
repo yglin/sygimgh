@@ -87,7 +87,10 @@ ng-cloak>
                 </circle>
             </g>
      -->    
-            <g syg-mama-nagging-node mama='$ctrl.mama' node='node'></g>
+            <g ng-attr-transform='translate(-{{node.r}}, -{{node.r}})' syg-mama-nagging-node mama='$ctrl.mama' node='node' size='{{node.r * 2}}'></g>
+            <g ng-attr-transform='translate(-{{node.r}}, -{{node.r}})'>
+                <g ng-repeat='name in node.showChromosomes' syg-chromosome size='{{node.r * 2}}' value='node[name]'></g>
+            </g>
         </g>
     </g>
 </svg>

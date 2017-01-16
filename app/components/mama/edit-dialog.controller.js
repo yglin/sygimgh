@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2017-01-07 16:01:25
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-09 14:46:24
+* @Last Modified time: 2017-01-16 17:04:16
 */
 
 'use strict';
@@ -27,6 +27,7 @@
 
     function activate() {
       $ctrl.naggingSource = extractFunctionBody($ctrl.mama.nagging);
+      $ctrl.reduceSource = extractFunctionBody($ctrl.mama.reduce);
     }
 
     function cancel() {
@@ -35,6 +36,7 @@
 
     function submit() {
       $ctrl.mama.nagging = new Function('node', $ctrl.naggingSource);
+      $ctrl.mama.reduce = new Function('reducedValues', $ctrl.reduceSource);
       $mdDialog.hide($ctrl.mama);
     }
 

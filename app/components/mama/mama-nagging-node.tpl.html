@@ -1,9 +1,10 @@
-<g ng-if='$ctrl.mama.isNaggingOn($ctrl.node)' ng-attr-transform='translate(-{{$ctrl.node.r}}, -{{$ctrl.node.r}})'>
-  <image ng-if='::$ctrl.mama.onNaggingImage' ng-attr-width='{{$ctrl.node.r * 2}}' ng-attr-height='{{$ctrl.node.r * 2}}' ng-href='{{$ctrl.mama.onNaggingImage}}' xlink:href=''>
+<g ng-if='$ctrl.mama.isNaggingOn($ctrl.node)'>
+  <image ng-if='::$ctrl.mama.onNaggingImage' ng-attr-width='{{$ctrl.size}}' ng-attr-height='{{$ctrl.size}}' ng-href='{{$ctrl.mama.onNaggingImage}}' xlink:href=''>
   </image>            
 </g>
-<g ng-show='$ctrl.mama.isLoser($ctrl.node)' ng-attr-transform='translate(-{{$ctrl.node.r}}, -{{$ctrl.node.r}})'>
-  <image ng-if='::$ctrl.mama.loserImage' ng-attr-width='{{$ctrl.node.r}}' ng-attr-height='{{$ctrl.node.r}}' ng-href='{{$ctrl.mama.loserImage}}' xlink:href=''>
+<g ng-show='$ctrl.mama.isLoser($ctrl.node)' ng-attr-transform='translate(-{{$ctrl.size * 0.5}}, -{{$ctrl.size * 0.5}})'>
+  <image ng-if='::$ctrl.mama.loserImage' ng-attr-width='{{$ctrl.size * 0.75}}' ng-attr-height='{{$ctrl.size * 0.75}}' ng-href='{{$ctrl.mama.loserImage}}' xlink:href=''>
   </image>
 </g>
+<g ng-if='$ctrl.reduceMeta && $ctrl.reduceValue' syg-reduce meta='$ctrl.reduceMeta' value='$ctrl.reduceValue'></g>
 

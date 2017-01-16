@@ -8,10 +8,18 @@
     </div>
   </md-toolbar>
   <md-dialog-content layout-padding>
-    <h3>function (node) {</h3>
-    <textarea style='margin-left: 30px;' ng-model='$ctrl.naggingSource' rows='10' cols='80'>
-    </textarea>
-    <h3>}</h3>
+    <div>
+      <h3>function (reducedValues) {</h3>
+      <textarea style='margin-left: 30px;' ng-model='$ctrl.reduceSource' rows='10' cols='80'>
+      </textarea>
+      <h3>}</h3>
+    </div>
+    <div>
+      <h3>function (node) {</h3>
+      <textarea style='margin-left: 30px;' ng-model='$ctrl.naggingSource' rows='10' cols='80'>
+      </textarea>
+      <h3>}</h3>
+    </div>
   </md-dialog-content>
   <md-dialog-actions layout="row">
     <md-button class='md-primary md-raised' ng-click='$ctrl.submit()'>確定</md-button>

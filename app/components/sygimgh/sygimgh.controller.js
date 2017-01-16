@@ -2,7 +2,7 @@
 * @Author: yglin
 * @Date:   2016-04-17 10:32:56
 * @Last Modified by:   yglin
-* @Last Modified time: 2017-01-09 15:31:07
+* @Last Modified time: 2017-01-16 12:01:38
 *
 * A simple angular wrapper directive for https://github.com/ariutta/svg-pan-zoom
 * 
@@ -313,6 +313,7 @@
 
         function startNagging(node) {
             $ctrl.mama = new Mama();
+            $ctrl.mama.reduceSelect = 'progress';
             $ctrl.mama.startNagging(node);
         }
 
